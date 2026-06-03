@@ -1,0 +1,14 @@
+Frontend : Next.js
+Backend : Express.js + MongoDB
+
+Product, cart & payements
+4 Fonctionnalités d'IA Pertinentes pour votre E-commerce:
+*Recherche Sémantique (Vector Search) : Permet aux clients de trouver des produits avec des phrases naturelles (ex: "une tenue décontractée pour un mariage en été") au lieu de simples mots-clés.
+*Agent d'Achat Personnalisé : Un chatbot qui analyse le panier de l'utilisateur et lui recommande des produits complémentaires en temps réel.
+*Génération Automatique de Fiches Produits : Un outil côté administration qui crée des descriptions optimisées SEO à partir d'une simple photo ou de caractéristiques techniques.
+*Analyse d'Avis et Résumé : Un système qui analyse les commentaires des clients pour afficher un résumé automatique des points forts et faibles d'un produit.
+
+
+├── frontend/ (Next.js + AI SDK de Vercel pour le streaming des réponses du chatbot)
+├── backend/  (Express.js + Client OpenAI/Anthropic/Hugging Face)
+└── database/ (MongoDB Atlas avec Vector Search activé pour stocker les "embeddings")
