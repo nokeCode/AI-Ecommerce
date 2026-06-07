@@ -1,4 +1,4 @@
-const { pipeline } = require('@xenova/transformers');
+const { pipeline } = require('@huggingface/transformers');
 
 let extractor = null;
 

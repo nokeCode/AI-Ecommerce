@@ -13,24 +13,20 @@ async function generateEmbeddings() {
     const text = `
       Nom: ${product.name}
       Description: ${product.description}
-      Tags: ${product.tags.join(' ')}
+      Tags: ${Array.isArray(product.tags) ? product.tags.join(' ') : ''}
     `;
 
-    const embedding =
-      await getEmbedding(text);
+    const embedding = await getEmbedding(text);
 
     product.embedding = embedding;
-
     await product.save();
 
-    console.log(
-      `Embedding généré : ${product.name}`
-    );
+    console.log(`Embedding généré : ${product.name}`);
   }
 
+  console.log(`Embeddings générés pour ${products.length} produits.`);
   process.exit();
 }
 
 generateEmbeddings();
 
-console.log(embedding.length);
