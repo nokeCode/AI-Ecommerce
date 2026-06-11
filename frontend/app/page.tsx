@@ -30,7 +30,7 @@ export default function HomePage() {
           display: "flex",
           alignItems: "center",
           overflow: "hidden",
-          background: "linear-gradient(135deg, #0a0a0f 0%, #0e0e18 50%, #12100a 100%)",
+          background: "linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 50%, #eff6fb 100%)",
         }}
       >
         {/* Background geometric */}
@@ -39,8 +39,8 @@ export default function HomePage() {
             position: "absolute",
             inset: 0,
             backgroundImage: `
-              radial-gradient(ellipse 60% 50% at 70% 50%, rgba(212,168,83,0.06) 0%, transparent 70%),
-              radial-gradient(ellipse 30% 30% at 20% 20%, rgba(212,168,83,0.04) 0%, transparent 60%)
+              radial-gradient(ellipse 60% 50% at 70% 50%, rgba(68,119,151,0.06) 0%, transparent 70%),
+              radial-gradient(ellipse 30% 30% at 20% 20%, rgba(68,119,151,0.04) 0%, transparent 60%)
             `,
           }}
         />
@@ -50,8 +50,8 @@ export default function HomePage() {
             position: "absolute",
             inset: 0,
             backgroundImage: `
-              linear-gradient(rgba(212,168,83,0.03) 1px, transparent 1px),
-              linear-gradient(90deg, rgba(212,168,83,0.03) 1px, transparent 1px)
+              linear-gradient(rgba(68,119,151,0.03) 1px, transparent 1px),
+              linear-gradient(90deg, rgba(68,119,151,0.03) 1px, transparent 1px)
             `,
             backgroundSize: "60px 60px",
           }}
@@ -79,7 +79,7 @@ export default function HomePage() {
                 alignItems: "center",
                 gap: "8px",
                 padding: "6px 16px",
-                background: "rgba(212,168,83,0.08)",
+                background: "rgba(68,119,151,0.08)",
                 border: "1px solid var(--accent-gold-dim)",
                 borderRadius: "100px",
                 marginBottom: "24px",
@@ -257,7 +257,7 @@ export default function HomePage() {
                 style={{
                   width: "44px",
                   height: "44px",
-                  background: "rgba(212,168,83,0.1)",
+                  background: "rgba(68,119,151,0.1)",
                   borderRadius: "10px",
                   display: "flex",
                   alignItems: "center",
@@ -407,7 +407,7 @@ export default function HomePage() {
           position: "relative",
           overflow: "hidden",
           borderRadius: "20px",
-          background: "linear-gradient(135deg, var(--bg-card) 0%, #1a1508 100%)",
+          background: "linear-gradient(135deg, var(--bg-card) 0%, var(--bg-secondary) 100%)",
           border: "1px solid var(--accent-gold-dim)",
           padding: "60px 48px",
         }}
@@ -416,7 +416,7 @@ export default function HomePage() {
           style={{
             position: "absolute",
             inset: 0,
-            backgroundImage: "radial-gradient(ellipse 50% 60% at 80% 50%, rgba(212,168,83,0.08) 0%, transparent 70%)",
+            backgroundImage: "radial-gradient(ellipse 50% 60% at 80% 50%, rgba(68,119,151,0.08) 0%, transparent 70%)",
           }}
         />
         <div style={{ position: "relative", maxWidth: "520px" }}>

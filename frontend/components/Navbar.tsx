@@ -18,7 +18,7 @@ export default function Navbar() {
   return (
     <header
       style={{
-        background: "rgba(10,10,15,0.92)",
+        background: "rgba(255,255,255,0.92)",
         backdropFilter: "blur(20px)",
         borderBottom: "1px solid var(--border-subtle)",
         position: "sticky",
@@ -34,7 +34,7 @@ export default function Navbar() {
           textAlign: "center",
           fontSize: "0.72rem",
           letterSpacing: "0.12em",
-          color: "#0a0a0f",
+          color: "var(--text-primary)",
           fontWeight: 700,
         }}
       >
@@ -76,7 +76,7 @@ export default function Navbar() {
               justifyContent: "center",
             }}
           >
-            <Gem size={18} color="#0a0a0f" />
+            <Gem size={18} color="var(--bg-primary)" />
           </div>
           <div>
             <div
@@ -166,7 +166,7 @@ export default function Navbar() {
                   top: "-8px",
                   right: "-8px",
                   background: "var(--accent-gold)",
-                  color: "#0a0a0f",
+                  color: "var(--text-primary)",
                   borderRadius: "50%",
                   width: "18px",
                   height: "18px",

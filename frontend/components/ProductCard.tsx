@@ -114,7 +114,7 @@ export default function ProductCard({ product, delay = 0 }: ProductCardProps) {
             <div
               style={{
                 background: "var(--accent-gold)",
-                color: "#0a0a0f",
+                color: "var(--text-primary)",
                 borderRadius: "8px",
                 padding: "8px 12px",
                 display: "flex",

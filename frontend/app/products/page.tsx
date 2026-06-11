@@ -172,7 +172,7 @@ function ProductsContent() {
                   border: "none",
                   background:
                     selectedCategory === cat
-                      ? "rgba(212,168,83,0.12)"
+                      ? "rgba(68,119,151,0.12)"
                       : "none",
                   color:
                     selectedCategory === cat
@@ -303,7 +303,7 @@ function ProductsContent() {
                     padding: "7px 10px",
                     borderRadius: "8px",
                     background:
-                      gridCols === n ? "rgba(212,168,83,0.12)" : "var(--bg-card)",
+                      gridCols === n ? "rgba(68,119,151,0.12)" : "var(--bg-card)",
                     border: `1px solid ${gridCols === n ? "var(--accent-gold-dim)" : "var(--border-subtle)"}`,
                     color:
                       gridCols === n ? "var(--accent-gold)" : "var(--text-muted)",

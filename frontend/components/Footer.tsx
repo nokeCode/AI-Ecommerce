@@ -36,7 +36,7 @@ export default function Footer() {
                   justifyContent: "center",
                 }}
               >
-                <Gem size={16} color="#0a0a0f" />
+                <Gem size={16} color="var(--bg-primary)" />
               </div>
               <span
                 style={{

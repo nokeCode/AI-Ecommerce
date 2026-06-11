@@ -430,8 +430,8 @@ export default function CartPage() {
               {shipping > 0 && (
                 <div
                   style={{
-                    background: "rgba(212,168,83,0.08)",
-                    border: "1px solid rgba(212,168,83,0.2)",
+                    background: "rgba(68,119,151,0.08)",
+                    border: "1px solid rgba(68,119,151,0.2)",
                     borderRadius: "8px",
                     padding: "8px 12px",
                     fontSize: "0.78rem",

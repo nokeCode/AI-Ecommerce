@@ -97,7 +97,7 @@ export default function SearchBar({ onSearch, isPage = false }: SearchBarProps) 
           height: isPage ? "52px" : "44px",
           transition: "border-color 0.2s, box-shadow 0.2s",
           boxShadow: isFocused
-            ? "0 0 0 3px rgba(212,168,83,0.1)"
+            ? "0 0 0 3px rgba(68,119,151,0.1)"
             : "none",
         }}
       >
@@ -155,7 +155,7 @@ export default function SearchBar({ onSearch, isPage = false }: SearchBarProps) 
         <div
           style={{
             padding: "3px 8px",
-            background: "rgba(212,168,83,0.1)",
+            background: "rgba(68,119,151,0.1)",
             border: "1px solid var(--accent-gold-dim)",
             borderRadius: "6px",
             fontSize: "0.65rem",

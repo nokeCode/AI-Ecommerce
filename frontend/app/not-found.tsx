@@ -8,8 +8,8 @@ export default function NotFound() {
       </h2>
       <Link href="/">
         <button style={{
-          background: "linear-gradient(135deg, #d4a853, #a07830)",
-          color: "#0a0a0f",
+          background: "linear-gradient(135deg, var(--accent-gold), var(--accent-gold-dim))",
+          color: "var(--text-primary)",
           padding: "12px 24px",
           borderRadius: "8px",
           border: "none",
