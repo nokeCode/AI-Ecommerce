@@ -7,24 +7,29 @@ const productSchema = new mongoose.Schema({
   description: {
     type: String
   },
-  shortDescription: {
+  longDescription: {
     type: String
   },
   price: {
     type: Number,
     required: true
   },
-  basePrice: {
+  originalPrice: {
     type: Number
   },
   category: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Category'
   },
-  images: [{
-    url: String
-  }],
-  stock: {
+  image: {
+    type: String
+  },
+  images: [
+    {
+      type: String
+    }
+  ],
+  inStock: {
     type: Number,
     default: 0
   },
@@ -38,6 +43,11 @@ const productSchema = new mongoose.Schema({
     color: String,
     size: String
   },
+  specs: {
+    type: Object,
+    default: {}
+  },
+  
   tags: [String],
   embedding: {
     type: [Number], // pour la recherche vectorielle

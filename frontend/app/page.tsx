@@ -6,12 +6,34 @@ import { ArrowRight, Shield, Truck, RefreshCw, Headphones, Star, ChevronRight } 
 import { PRODUCTS, CATEGORIES } from "@/data/products";
 import ProductCard from "@/components/ProductCard";
 import SearchBar from "@/components/SearchBar";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { getProducts } from "@/services/productService";
+import { Product } from "@/types";
 
 export default function HomePage() {
   const [searchQuery, setSearchQuery] = useState("");
+  const [products, setProducts] = useState<Product[]>(PRODUCTS);
+  const [loading, setLoading] = useState(true);
 
-  const featured = PRODUCTS.slice(0, 4);
+  useEffect(() => {
+    const loadProducts = async () => {
+      try {
+        const apiProducts = await getProducts();
+        if (apiProducts && apiProducts.length > 0) {
+          setProducts(apiProducts);
+        }
+      } catch (error) {
+        console.error("Erreur lors du chargement des produits:", error);
+        // Garder les données locales comme fallback
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadProducts();
+  }, []);
+
+  const featured = products.slice(0, 4);
 
   const trustItems = [
     { icon: Truck, title: "Livraison offerte", desc: "Dès 150€ d'achat" },
@@ -175,7 +197,7 @@ export default function HomePage() {
               position: "relative",
             }}
           >
-            {PRODUCTS.slice(0, 4).map((p, i) => (
+            {featured.map((p, i) => (
               <Link key={p.id} href={`/product/${p.id}`} style={{ textDecoration: "none" }}>
                 <div
                   className="card-hover"

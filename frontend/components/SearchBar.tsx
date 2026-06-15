@@ -6,6 +6,7 @@ import { PRODUCTS } from "@/data/products";
 import { Product } from "@/types";
 import Link from "next/link";
 import Image from "next/image";
+import { semanticSearch } from "@/services/searchService";
 
 interface SearchBarProps {
   onSearch?: (query: string) => void;
@@ -36,24 +37,46 @@ export default function SearchBar({ onSearch, isPage = false }: SearchBarProps) 
     }
 
     setIsSearching(true);
-    const timer = setTimeout(() => {
-      const q = query.toLowerCase();
-      const filtered = PRODUCTS.filter(
-        (p) =>
-          p.name.toLowerCase().includes(q) ||
-          p.category.toLowerCase().includes(q) ||
-          p.description.toLowerCase().includes(q)
-      );
-      setResults(filtered);
-
-      // Simulate AI suggestion
-      if (filtered.length > 0) {
-        setAiSuggestion(
-          `${filtered.length} résultat${filtered.length > 1 ? "s" : ""} correspondant à "${query}"`
+    const timer = setTimeout(async () => {
+      try {
+        // Essayer la recherche sémantique d'abord
+        const apiResults = await semanticSearch(query);
+        if (apiResults && Array.isArray(apiResults)) {
+          setResults(apiResults);
+          setAiSuggestion(
+            `${apiResults.length} résultat${apiResults.length > 1 ? "s" : ""} correspondant à "${query}"`
+          );
+        } else {
+          // Fallback à la recherche locale
+          const q = query.toLowerCase();
+          const filtered = PRODUCTS.filter(
+            (p) =>
+              p.name.toLowerCase().includes(q) ||
+              p.category.toLowerCase().includes(q) ||
+              p.description.toLowerCase().includes(q)
+          );
+          setResults(filtered);
+          setAiSuggestion(
+            filtered.length > 0
+              ? `${filtered.length} résultat${filtered.length > 1 ? "s" : ""} correspondant à "${query}"`
+              : `Aucun résultat exact — essayez "montre", "parfum" ou "cuir"`
+          );
+        }
+      } catch (error) {
+        console.error("Erreur recherche:", error);
+        // Fallback à la recherche locale
+        const q = query.toLowerCase();
+        const filtered = PRODUCTS.filter(
+          (p) =>
+            p.name.toLowerCase().includes(q) ||
+            p.category.toLowerCase().includes(q) ||
+            p.description.toLowerCase().includes(q)
         );
-      } else {
+        setResults(filtered);
         setAiSuggestion(
-          `Aucun résultat exact — essayez "montre", "parfum" ou "cuir"`
+          filtered.length > 0
+            ? `${filtered.length} résultat${filtered.length > 1 ? "s" : ""} correspondant à "${query}"`
+            : `Aucun résultat exact — essayez "montre", "parfum" ou "cuir"`
         );
       }
 

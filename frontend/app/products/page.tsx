@@ -1,11 +1,13 @@
 "use client";
 
-import { useState, useMemo, Suspense } from "react";
+import { useState, useMemo, Suspense, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
 import { SlidersHorizontal, Grid3X3, List, X } from "lucide-react";
 import { PRODUCTS, CATEGORIES } from "@/data/products";
 import ProductCard from "@/components/ProductCard";
 import SearchBar from "@/components/SearchBar";
+import { getProducts } from "@/services/productService";
+import { Product } from "@/types";
 
 function ProductsContent() {
   const searchParams = useSearchParams();
@@ -16,9 +18,28 @@ function ProductsContent() {
   const [searchQuery, setSearchQuery] = useState("");
   const [priceRange, setPriceRange] = useState<[number, number]>([0, 500]);
   const [gridCols, setGridCols] = useState<3 | 4>(3);
+  const [products, setProducts] = useState<Product[]>(PRODUCTS);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const loadProducts = async () => {
+      try {
+        const apiProducts = await getProducts();
+        if (apiProducts && apiProducts.length > 0) {
+          setProducts(apiProducts);
+        }
+      } catch (error) {
+        console.error("Erreur lors du chargement des produits:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadProducts();
+  }, []);
 
   const filtered = useMemo(() => {
-    let list = [...PRODUCTS];
+    let list = [...products];
 
     if (selectedCategory !== "Toutes") {
       list = list.filter((p) => p.category === selectedCategory);

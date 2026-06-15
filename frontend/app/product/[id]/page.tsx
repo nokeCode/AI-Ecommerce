@@ -1,12 +1,14 @@
 "use client";
 
-import { use, useState } from "react";
+import { use, useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowLeft, ShoppingCart, Star, Shield, Truck, Check, ChevronDown, ChevronUp } from "lucide-react";
 import { PRODUCTS } from "@/data/products";
 import { useCart } from "@/context/CartContext";
 import ProductCard from "@/components/ProductCard";
+import { getProductById, getProducts } from "@/services/productService";
+import { Product } from "@/types";
 
 export default function ProductDetailPage({
   params,
@@ -15,14 +17,53 @@ export default function ProductDetailPage({
 }) {
   const { id } = use(params);
   const { addToCart } = useCart();
+  const [product, setProduct] = useState<Product | null>(null);
+  const [related, setRelated] = useState<Product[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  const product = PRODUCTS.find((p) => p.id === id);
-  const related = PRODUCTS.filter((p) => p.id !== id && p.category === product?.category).slice(0, 3);
+  useEffect(() => {
+    const loadProduct = async () => {
+      try {
+        const apiProduct = await getProductById(id);
+        if (apiProduct) {
+          setProduct(apiProduct);
+          
+          // Charger les produits liés
+          const allProducts = await getProducts();
+          const relatedProducts = allProducts
+            .filter((p: Product) => p.id !== id && p.category === apiProduct.category)
+            .slice(0, 3);
+          setRelated(relatedProducts);
+        }
+      } catch (error) {
+        console.error("Erreur lors du chargement du produit:", error);
+        // Fallback aux données locales
+        const localProduct = PRODUCTS.find((p) => p.id === id);
+        if (localProduct) {
+          setProduct(localProduct);
+          const relatedProducts = PRODUCTS.filter((p) => p.id !== id && p.category === localProduct.category).slice(0, 3);
+          setRelated(relatedProducts);
+        }
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadProduct();
+  }, [id]);
 
   const [selectedImage, setSelectedImage] = useState(0);
   const [quantity, setQuantity] = useState(1);
   const [added, setAdded] = useState(false);
   const [activeTab, setActiveTab] = useState<"desc" | "specs" | "features">("desc");
+
+  if (loading) {
+    return (
+      <div style={{ textAlign: "center", padding: "100px 24px" }}>
+        <p style={{ color: "var(--text-primary)" }}>Chargement...</p>
+      </div>
+    );
+  }
 
   if (!product) {
     return (
