@@ -5,9 +5,12 @@
   --bg-secondary: #dbe9f5;
   --bg-card: #eff6fb;
   --bg-elevated: #d8e8f6;
-  --accent-gold: #447797;
-  --accent-gold-light: #7aaed1;
-  --accent-gold-dim: #2d5b75;
+
+  /* Boutons alignés sur la couleur principale (accent) */
+  --accent-gold: #3f6f86;       /* légèrement ajustée pour mieux matcher */
+  --accent-gold-light: #6fb0d6;/* hover plus lumineux */
+  --accent-gold-dim: #2a556c;  /* état / bordures plus profond */
+
   --text-primary: #0f2f4f;
   --text-secondary: #1f4f76;
   --text-muted: #4c7299;
@@ -16,6 +19,7 @@
   --success: #4ade80;
   --error: #f87171;
 }
+
 
 * { box-sizing: border-box; }
 html { scroll-behavior: smooth; }
@@ -117,8 +121,9 @@ body {
 .star-empty { color: var(--text-muted); }
 
 .badge-sale {
-  background: linear-gradient(135deg, #3d77a5, #2d5b75);
+  background: linear-gradient(135deg, var(--accent-gold-light), var(--accent-gold-dim));
   color: white;
+
   font-size: 0.7rem;
   font-weight: 700;
   letter-spacing: 0.08em;

@@ -468,7 +468,7 @@ export default function ProductDetailPage({
 
           {activeTab === "features" && (
             <ul style={{ listStyle: "none", padding: 0, margin: 0, maxWidth: "600px" }}>
-              {product.features.map((f, i) => (
+              {(product.features ?? []).map((f, i) => (
                 <li
                   key={i}
                   style={{
@@ -477,7 +477,7 @@ export default function ProductDetailPage({
                     gap: "12px",
                     padding: "12px 0",
                     borderBottom:
-                      i < product.features.length - 1
+                      i < (product.features?.length ?? 0) - 1
                         ? "1px solid var(--border-subtle)"
                         : "none",
                     fontSize: "0.9rem",
@@ -491,6 +491,12 @@ export default function ProductDetailPage({
                   {f}
                 </li>
               ))}
+
+              {(product.features ?? []).length === 0 && (
+                <li style={{ color: "var(--text-muted)", padding: "12px 0" }}>
+                  Aucun point fort disponible.
+                </li>
+              )}
             </ul>
           )}
 
