@@ -84,12 +84,17 @@ function ProductsContent() {
 
     if (searchQuery) {
       const q = searchQuery.toLowerCase();
-      list = list.filter(
-        (p) =>
-          p.name.toLowerCase().includes(q) ||
-          p.category.toLowerCase().includes(q) ||
-          p.description.toLowerCase().includes(q)
-      );
+      list = list.filter((p) => {
+        const name = p.name ?? "";
+        const category = p.category ?? "";
+        const description = p.description ?? "";
+
+        return (
+          name.toLowerCase().includes(q) ||
+          category.toLowerCase().includes(q) ||
+          description.toLowerCase().includes(q)
+        );
+      });
     }
 
     list = list.filter(

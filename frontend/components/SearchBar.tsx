@@ -23,10 +23,11 @@ export default function SearchBar({ onSearch, isPage = false }: SearchBarProps) 
   const containerRef = useRef<HTMLDivElement>(null);
 
   const aiSuggestions = [
-    "Trouvez-moi une montre élégante pour offrir",
-    "Je cherche un parfum boisé et intense",
-    "Sac en cuir naturel pour homme",
-    "Accessoire premium sous 200€",
+    "Je cherche un canapé moderne pour un petit salon",
+    "Je veux une lampe élégante pour une chambre minimaliste",
+    "Décoration salle à manger",
+    "Petit appartement",
+    "Style vintage"
   ];
 
   useEffect(() => {
@@ -67,11 +68,11 @@ export default function SearchBar({ onSearch, isPage = false }: SearchBarProps) 
               p.description.toLowerCase().includes(q)
           );
           setResults(filtered);
-          setAiSuggestion(
-            filtered.length > 0
-              ? `${filtered.length} résultat${filtered.length > 1 ? "s" : ""} correspondant à "${query}"`
-              : `Aucun résultat exact — essayez "montre", "parfum" ou "cuir"`
-          );
+        setAiSuggestion(
+          filtered.length > 0
+            ? `${filtered.length} résultat${filtered.length > 1 ? "s" : ""} correspondant à "${query}"`
+            : `Aucun résultat exact — essayez "décoration", "meuble" ou "chambre"`
+        );
         }
       } catch (error) {
         console.error("Erreur recherche:", error);
@@ -87,7 +88,7 @@ export default function SearchBar({ onSearch, isPage = false }: SearchBarProps) 
         setAiSuggestion(
           filtered.length > 0
             ? `${filtered.length} résultat${filtered.length > 1 ? "s" : ""} correspondant à "${query}"`
-            : `Aucun résultat exact — essayez "montre", "parfum" ou "cuir"`
+              : `Aucun résultat exact — essayez "canapé", "table", "lampe"`
         );
       }
 
