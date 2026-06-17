@@ -13,9 +13,10 @@ import { Product } from "@/types";
 export default function ProductDetailPage({
   params,
 }: {
-  params: Promise<{ id: string }>;
+  params: { id: string };
 }) {
-  const { id } = use(params);
+  const { id } = params;
+
   const { addToCart } = useCart();
   const [product, setProduct] = useState<Product | null>(null);
   const [related, setRelated] = useState<Product[]>([]);
@@ -37,13 +38,7 @@ export default function ProductDetailPage({
         }
       } catch (error) {
         console.error("Erreur lors du chargement du produit:", error);
-        // Fallback aux données locales
-        const localProduct = PRODUCTS.find((p) => p.id === id);
-        if (localProduct) {
-          setProduct(localProduct);
-          const relatedProducts = PRODUCTS.filter((p) => p.id !== id && p.category === localProduct.category).slice(0, 3);
-          setRelated(relatedProducts);
-        }
+
       } finally {
         setLoading(false);
       }

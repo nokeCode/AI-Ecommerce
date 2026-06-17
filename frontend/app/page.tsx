@@ -12,7 +12,7 @@ import { Product } from "@/types";
 
 export default function HomePage() {
   const [searchQuery, setSearchQuery] = useState("");
-  const [products, setProducts] = useState<Product[]>(PRODUCTS);
+  const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -262,9 +262,9 @@ export default function HomePage() {
             gap: "24px",
           }}
         >
-          {trustItems.map(({ icon: Icon, title, desc }) => (
+          {trustItems.map(({ icon: Icon, title, desc }, idx) => (
             <div
-              key={title}
+              key={idx}
               style={{
                 display: "flex",
                 alignItems: "center",

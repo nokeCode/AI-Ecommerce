@@ -19,7 +19,23 @@ router.get("/", async (req, res) => {
 // GET un produit par ID
 router.get("/:id", async (req, res) => {
   try {
-    const product = await Product.findById(req.params.id);
+    const { id } = req.params;
+
+    // Supporte à la fois :
+    // - un vrai _id Mongo (ObjectId)
+    // - un id seed (string/number) stocké éventuellement dans productId
+    // Mongoose: findById attend un ObjectId, donc on évite le CastError.
+    let product = null;
+    try {
+      product = await Product.findById(id);
+    } catch (_) {
+      // ignore: ex id="1" non-ObjectId
+    }
+
+    if (!product) {
+      product = await Product.findOne({ productId: id });
+    }
+
 
     if (!product) {
       return res.status(404).json({

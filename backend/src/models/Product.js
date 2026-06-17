@@ -16,11 +16,14 @@ const productSchema = new mongoose.Schema({
   },
   originalPrice: {
     type: Number
+
   },
+
   category: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Category'
   },
+
   image: {
     type: String
   },
@@ -49,6 +52,7 @@ const productSchema = new mongoose.Schema({
   },
   
   tags: [String],
+  
   embedding: {
     type: [Number], // pour la recherche vectorielle
     default: []
