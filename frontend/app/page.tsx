@@ -211,7 +211,16 @@ export default function HomePage() {
             }}
           >
               {featured.map((p, i) => (
-              <Link key={p.id ?? `${p.name}-${i}`} href={`/product/${p.id}`} style={{ textDecoration: "none" }}>
+
+              <Link
+                key={(p as { _id?: string; id?: string })._id ?? (p as { _id?: string; id?: string }).id ?? `${p.name}-${i}`}
+                href={`/product/${(p as { _id?: string; id?: string })._id ?? (p as { _id?: string; id?: string }).id}`}
+
+                style={{ textDecoration: "none" }}
+              >
+
+
+
                 <div
                   className="card-hover"
                   style={{
@@ -434,11 +443,16 @@ export default function HomePage() {
             gap: "24px",
           }}
         >
-          {featured.map((product, i) => (
-            <ProductCard key={product.id} product={product} delay={(i + 1) * 100} />
+              {featured.map((product, i) => (
+            <ProductCard
+              key={(product as { _id?: string; id?: string })._id ?? (product as { _id?: string; id?: string }).id}
+              product={product}
+              delay={(i + 1) * 100}
+            />
           ))}
         </div>
       </section>
+
 
       {/* ─── CTA BANNER ─── */}
       <section

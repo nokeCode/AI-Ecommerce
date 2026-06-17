@@ -13,9 +13,11 @@ import { Product } from "@/types";
 export default function ProductDetailPage({
   params,
 }: {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }) {
-  const { id } = params;
+  // Next.js 16: params peut être une Promise dans certains setups
+  const { id } = use(params);
+
 
   const { addToCart } = useCart();
   const [product, setProduct] = useState<Product | null>(null);

@@ -41,7 +41,11 @@ export default function SearchBar({ onSearch, isPage = false }: SearchBarProps) 
       return () => window.clearTimeout(id);
     }
 
-    setIsSearching(true);
+    // Déplacer l'update hors du cycle courant pour éviter le warning React
+    window.setTimeout(() => setIsSearching(true), 0);
+
+
+
 
 
     const timer = setTimeout(async () => {
