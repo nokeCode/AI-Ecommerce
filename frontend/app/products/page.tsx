@@ -8,15 +8,21 @@ import SearchBar from "@/components/SearchBar";
 import { getProducts } from "@/services/productService";
 import { getCategories } from "@/services/categoryService";
 import { Product } from "@/types";
-
+import Skeleton from "@/components/Skeleton";
 
 function ProductsContent() {
+  const [filtersPending, setFiltersPending] = useState(false);
+  const triggerFiltersSkeleton = () => {
+    setFiltersPending(true);
+    window.setTimeout(() => setFiltersPending(false), 300);
+  };
+
   const searchParams = useSearchParams();
-  const initialCategory = decodeURIComponent(searchParams.get("category") || "Toutes");
-
-
+  const rawCategory = searchParams.get("category");
+  const initialCategory = rawCategory && rawCategory.trim() ? decodeURIComponent(rawCategory) : "Toutes";
 
   const [selectedCategory, setSelectedCategory] = useState(initialCategory);
+
   const [sortBy, setSortBy] = useState("featured");
   const [searchQuery, setSearchQuery] = useState("");
   const [priceRange, setPriceRange] = useState<[number, number]>([0, 500]);
@@ -66,11 +72,14 @@ function ProductsContent() {
   const filtered = useMemo(() => {
     let list = [...products];
 
+    // Si l'URL contient une catégorie vide / mal encodée, on évite un filtre qui vide toute la liste.
+    const normalizedSelectedCategory = normalize(selectedCategory);
+    const isAll = normalizedSelectedCategory === "toutes" || !normalizedSelectedCategory;
 
-    if (selectedCategory !== "Toutes") {
-      const wanted = normalize(selectedCategory);
-      list = list.filter((p) => normalize(p.category) === wanted);
+    if (!isAll) {
+      list = list.filter((p) => normalize(p.category) === normalizedSelectedCategory);
     }
+
 
 
     if (searchQuery) {
@@ -215,7 +224,10 @@ function ProductsContent() {
 
 
                 key={cat}
-                onClick={() => setSelectedCategory(cat)}
+                onClick={() => {
+                  triggerFiltersSkeleton();
+                  setSelectedCategory(cat);
+                }}
                 style={{
                   width: "100%",
                   padding: "9px 12px",
@@ -368,7 +380,36 @@ function ProductsContent() {
             </div>
           </div>
 
-          {filtered.length === 0 ? (
+          {(loading || filtersPending) ? (
+            <div
+              style={{
+                display: "grid",
+                gridTemplateColumns: `repeat(${gridCols}, 1fr)`,
+                gap: "20px",
+              }}
+            >
+              {Array.from({ length: gridCols * 2 }).map((_, i) => (
+                <div
+                  key={i}
+                  style={{
+                    background: "var(--bg-card)",
+                    border: "1px solid var(--border-subtle)",
+                    borderRadius: "12px",
+                    overflow: "hidden",
+                    padding: "16px",
+                  }}
+                >
+                  <Skeleton variant="rect" width="100%" height={160} radius={10} />
+                  <div style={{ marginTop: 12, display: "grid", gap: 8 }}>
+                    <Skeleton variant="text" width="70%" height={14} radius={6} />
+                    <Skeleton variant="text" width="90%" height={18} radius={6} />
+                    <Skeleton variant="text" width="100%" height={14} radius={6} />
+                    <Skeleton variant="rect" width="60%" height={34} radius={8} />
+                  </div>
+                </div>
+              ))}
+            </div>
+          ) : filtered.length === 0 ? (
             <div
               style={{
                 textAlign: "center",

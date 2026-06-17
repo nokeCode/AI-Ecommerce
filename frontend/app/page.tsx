@@ -6,8 +6,8 @@ import { ArrowRight, Shield, Truck, RefreshCw, Headphones, Star, ChevronRight } 
 import ProductCard from "@/components/ProductCard";
 import { getCategories } from "@/services/categoryService";
 
-
 import SearchBar from "@/components/SearchBar";
+import Skeleton from "@/components/Skeleton";
 import { useState, useEffect } from "react";
 import { getProducts } from "@/services/productService";
 import { Product } from "@/types";
@@ -47,6 +47,10 @@ export default function HomePage() {
 
 
   const featured = products.slice(0, 4);
+
+  const featuredSkeletons = Array.from({ length: 4 }, (_, i) => i);
+  const mosaicSkeletons = Array.from({ length: 4 }, (_, i) => i);
+
 
   const trustItems = [
     { icon: Truck, title: "Livraison offerte", desc: "Dès 150€ d'achat" },
@@ -210,9 +214,40 @@ export default function HomePage() {
               position: "relative",
             }}
           >
-              {featured.map((p, i) => (
-
-              <Link
+            {loading
+              ? mosaicSkeletons.map((i) => (
+                  <div
+                    key={i}
+                    style={{
+                      aspectRatio: i === 0 ? "auto" : "1",
+                      gridRow: i === 0 ? "1 / 3" : "auto",
+                      background: "var(--bg-card)",
+                      borderRadius: "12px",
+                      overflow: "hidden",
+                      border: "1px solid var(--border-subtle)",
+                      position: "relative",
+                      minHeight: i === 0 ? "300px" : "140px",
+                    }}
+                  >
+                    <Skeleton variant="rect" width="100%" height="100%" radius={12} />
+                    <div
+                      style={{
+                        position: "absolute",
+                        bottom: 0,
+                        left: 0,
+                        right: 0,
+                        background: "linear-gradient(transparent, rgba(10,10,15,0.9))",
+                        padding: "20px 12px 12px",
+                      }}
+                    >
+                      <Skeleton variant="text" width="70%" height={12} radius={6} />
+                      <div style={{ height: 10 }} />
+                      <Skeleton variant="text" width="40%" height={16} radius={8} />
+                    </div>
+                  </div>
+                ))
+              : featured.map((p, i) => (
+                  <Link
                 key={(p as { _id?: string; id?: string })._id ?? (p as { _id?: string; id?: string }).id ?? `${p.name}-${i}`}
                 href={`/product/${(p as { _id?: string; id?: string })._id ?? (p as { _id?: string; id?: string }).id}`}
 
@@ -443,13 +478,50 @@ export default function HomePage() {
             gap: "24px",
           }}
         >
-              {featured.map((product, i) => (
-            <ProductCard
-              key={(product as { _id?: string; id?: string })._id ?? (product as { _id?: string; id?: string }).id}
-              product={product}
-              delay={(i + 1) * 100}
-            />
-          ))}
+          {loading
+            ? featuredSkeletons.map((i) => (
+                <div
+                  key={i}
+                  className="card-hover"
+                  style={{
+                    background: "var(--bg-card)",
+                    border: "1px solid var(--border-subtle)",
+                    borderRadius: "12px",
+                    overflow: "hidden",
+                    cursor: "pointer",
+                  }}
+                >
+                  <div
+                    style={{
+                      position: "relative",
+                      aspectRatio: "4/3",
+                      background: "var(--bg-elevated)",
+                      overflow: "hidden",
+                    }}
+                  >
+                    <Skeleton variant="rect" width="100%" height="100%" radius={0} />
+                  </div>
+                  <div style={{ padding: "16px" }}>
+                    <Skeleton variant="text" width="60%" height={12} radius={6} />
+                    <div style={{ height: 10 }} />
+                    <Skeleton variant="text" width="90%" height={16} radius={8} />
+                    <div style={{ height: 8 }} />
+                    <Skeleton variant="text" width="100%" height={14} radius={7} />
+                    <div style={{ height: 14 }} />
+                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                      <Skeleton variant="text" width="40%" height={20} radius={8} />
+                      <Skeleton variant="rect" width={92} height={34} radius={8} />
+                    </div>
+                  </div>
+                </div>
+              ))
+            : featured.map((product, i) => (
+                <ProductCard
+                  key={(product as { _id?: string; id?: string })._id ?? (product as { _id?: string; id?: string }).id}
+                  product={product}
+                  delay={(i + 1) * 100}
+                />
+              ))}
         </div>
       </section>
 
