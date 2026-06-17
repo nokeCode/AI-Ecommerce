@@ -11,7 +11,7 @@ const { seedCategories } = require('./seedCategory');
 const { seedUsers } = require('./seedUser');
 const { seedReviews } = require('./seedReviews');
 
-async function seed() {
+async function seedProducts() {
   await connectDB();
 
   console.log('Database utilisée :', mongoose.connection.db.databaseName);
@@ -457,8 +457,19 @@ async function seed() {
   const reviewsCount = await Review.countDocuments({});
   console.log('Counts =>', { categoriesCount, usersCount, productsCount, reviewsCount });
 
-  process.exit(0);
+  return insertedProducts;
 }
 
-seed();
+// CLI entrypoint
+if (require.main === module) {
+  seedProducts()
+    .then(() => process.exit(0))
+    .catch((err) => {
+      console.error('Seed products échoué :', err);
+      process.exit(1);
+    });
+}
+
+module.exports = { seedProducts };
+
 

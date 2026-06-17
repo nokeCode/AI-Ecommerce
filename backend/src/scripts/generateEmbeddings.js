@@ -25,8 +25,19 @@ async function generateEmbeddings() {
   }
 
   console.log(`Embeddings générés pour ${products.length} produits.`);
-  process.exit();
+  return products.length;
 }
 
-generateEmbeddings();
+// CLI entrypoint
+if (require.main === module) {
+  generateEmbeddings()
+    .then(() => process.exit(0))
+    .catch((err) => {
+      console.error('Génération embeddings échouée :', err);
+      process.exit(1);
+    });
+}
+
+module.exports = { generateEmbeddings };
+
 
