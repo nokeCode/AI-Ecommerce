@@ -55,12 +55,23 @@ function ProductsContent() {
   }, []);
 
 
+  const normalize = (s: string) =>
+    (s ?? "")
+      .toString()
+      .trim()
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .toLowerCase();
+
   const filtered = useMemo(() => {
     let list = [...products];
 
+
     if (selectedCategory !== "Toutes") {
-      list = list.filter((p) => p.category === selectedCategory);
+      const wanted = normalize(selectedCategory);
+      list = list.filter((p) => normalize(p.category) === wanted);
     }
+
 
     if (searchQuery) {
       const q = searchQuery.toLowerCase();
