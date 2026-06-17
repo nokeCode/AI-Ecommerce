@@ -4,13 +4,16 @@ const cors = require("cors");
 const productRoutes = require("./routes/productRoutes");
 const orderRoutes = require("./routes/orderRoutes");
 const searchRoutes = require('./routes/searchRoutes');
+const categoriesRoutes = require('./routes/categoriesRoutes');
 const app = express();
+
 
 app.use(cors());
 app.use(express.json());
 
 app.use("/api/products", productRoutes);
 app.use("/api/orders", orderRoutes);
+app.use("/api/categories", categoriesRoutes);
 
 app.use(
   '/api/search',

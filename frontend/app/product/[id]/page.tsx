@@ -4,7 +4,7 @@ import { use, useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowLeft, ShoppingCart, Star, Shield, Truck, Check, ChevronDown, ChevronUp } from "lucide-react";
-import { PRODUCTS } from "@/data/products";
+
 import { useCart } from "@/context/CartContext";
 import ProductCard from "@/components/ProductCard";
 import { getProductById, getProducts } from "@/services/productService";

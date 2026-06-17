@@ -31,12 +31,19 @@ export default function SearchBar({ onSearch, isPage = false }: SearchBarProps) 
 
   useEffect(() => {
     if (query.length < 2) {
-      setResults([]);
-      setAiSuggestion("");
-      return;
+      // Important: ne pas déclencher de setState synchrones en cascade.
+      // On repousse les updates au prochain tick.
+      const id = window.setTimeout(() => {
+        setResults([]);
+        setAiSuggestion("");
+        setIsSearching(false);
+      }, 0);
+      return () => window.clearTimeout(id);
     }
 
     setIsSearching(true);
+
+
     const timer = setTimeout(async () => {
       try {
         // Essayer la recherche sémantique d'abord

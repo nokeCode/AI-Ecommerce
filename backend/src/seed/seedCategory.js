@@ -5,42 +5,54 @@ const Category = require('../models/Category');
 
 async function seedCategories() {
   await connectDB();
-  console.log('Seed Category - DB utilisée :', mongoose.connection.db.databaseName);
+
+  console.log(
+    'Seed Category - DB utilisée :',
+    mongoose.connection.db.databaseName
+  );
 
   await Category.deleteMany({});
 
   const categories = [
     {
-      name: 'Costumes & Mariage',
-      description: 'Costumes, tenues de cérémonie et accessoires pour événements formels.',
+      name: 'Canapés & Fauteuils',
+      description:
+        'Canapés, fauteuils, poufs et assises pour le salon.',
       parentCategory: null
     },
     {
-      name: 'Chemises & Tops',
-      description: 'Chemises, hauts et pièces essentielles pour un look soigné.',
+      name: 'Tables & Bureaux',
+      description:
+        'Tables basses, tables à manger, bureaux et consoles.',
       parentCategory: null
     },
     {
-      name: 'Chaussures',
-      description: 'Chaussures pour le quotidien et le sport.',
+      name: 'Chambres',
+      description:
+        'Lits, tables de chevet, armoires et mobilier de chambre.',
       parentCategory: null
     },
     {
-      name: 'Vêtements & Accessoires',
-      description: 'Vêtements et accessoires complémentaires.',
+      name: 'Décoration',
+      description:
+        'Objets décoratifs, cadres, miroirs et accessoires de maison.',
       parentCategory: null
     },
     {
-      name: 'Sport',
-      description: 'Articles et tenues dédiés à la pratique sportive.',
+      name: 'Éclairage',
+      description:
+        'Lampes de table, lampadaires, suspensions et luminaires.',
       parentCategory: null
     }
   ];
 
   const inserted = await Category.insertMany(categories);
-  console.log(`Seed Category - catégories créées : ${inserted.length}`);
+
+  console.log(
+    `Seed Category - catégories créées : ${inserted.length}`
+  );
+
   return inserted;
 }
 
 module.exports = { seedCategories };
-

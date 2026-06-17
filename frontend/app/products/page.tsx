@@ -3,15 +3,18 @@
 import { useState, useMemo, Suspense, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
 import { SlidersHorizontal, Grid3X3, List, X } from "lucide-react";
-import { PRODUCTS, CATEGORIES } from "@/data/products";
 import ProductCard from "@/components/ProductCard";
 import SearchBar from "@/components/SearchBar";
 import { getProducts } from "@/services/productService";
+import { getCategories } from "@/services/categoryService";
 import { Product } from "@/types";
+
 
 function ProductsContent() {
   const searchParams = useSearchParams();
-  const initialCategory = searchParams.get("category") || "Toutes";
+  const initialCategory = decodeURIComponent(searchParams.get("category") || "Toutes");
+
+
 
   const [selectedCategory, setSelectedCategory] = useState(initialCategory);
   const [sortBy, setSortBy] = useState("featured");
@@ -19,24 +22,38 @@ function ProductsContent() {
   const [priceRange, setPriceRange] = useState<[number, number]>([0, 500]);
   const [gridCols, setGridCols] = useState<3 | 4>(3);
   const [products, setProducts] = useState<Product[]>([]);
+  const [categories, setCategories] = useState<string[]>(["Toutes"]);
   const [loading, setLoading] = useState(true);
 
+
   useEffect(() => {
-    const loadProducts = async () => {
+    const load = async () => {
       try {
-        const apiProducts = await getProducts();
+        const [apiProducts, apiCategories] = await Promise.all([
+          getProducts(),
+          getCategories(),
+        ]);
+
         if (apiProducts && apiProducts.length > 0) {
           setProducts(apiProducts);
         }
+
+        if (apiCategories && apiCategories.length > 0) {
+          const names = Array.from(
+            new Set(apiCategories.map((c) => c.name))
+          ).filter(Boolean);
+          setCategories(["Toutes", ...names]);
+        }
       } catch (error) {
-        console.error("Erreur lors du chargement des produits:", error);
+        console.error("Erreur lors du chargement des produits/catégories:", error);
       } finally {
         setLoading(false);
       }
     };
 
-    loadProducts();
+    load();
   }, []);
+
 
   const filtered = useMemo(() => {
     let list = [...products];
@@ -182,8 +199,10 @@ function ProductsContent() {
             >
               Catégorie
             </div>
-            {CATEGORIES.map((cat) => (
+            {categories.map((cat: string) => (
               <button
+
+
                 key={cat}
                 onClick={() => setSelectedCategory(cat)}
                 style={{

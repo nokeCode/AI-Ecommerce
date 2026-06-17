@@ -27,421 +27,338 @@ async function seedProducts() {
 
   const categoryByName = new Map(categories.map((c) => [c.name, c]));
 
-  const catCostumes = categoryByName.get('Costumes & Mariage')?._id;
-  const catChemises = categoryByName.get('Chemises & Tops')?._id;
-  const catChaussures = categoryByName.get('Chaussures')?._id;
-  const catVetAcc = categoryByName.get('Vêtements & Accessoires')?._id;
-  const catSport = categoryByName.get('Sport')?._id;
+  const catCanapes = categoryByName.get('Canapés & Fauteuils')?._id;
+  const catTables = categoryByName.get('Tables & Bureaux')?._id;
+  const catChambres = categoryByName.get('Chambres')?._id;
+  const catDecoration = categoryByName.get('Décoration')?._id;
+  const catEclairage = categoryByName.get('Éclairage')?._id;
+
 
   const demoProducts = [
     // 1-4 Costumes
     {
-      name: 'Costume Bleu',
-      description: 'Costume élégant pour mariage',
+      name: 'Canapé Scandinave Gris',
+      description: 'Canapé moderne au design nordique',
       longDescription:
-        'Costume bleu classique, confortable et idéal pour un événement formel. Coupe soignée et tissu de qualité.',
-      price: 120,
-      originalPrice: 160,
-      inStock: 10,
-      status: 'active',
-      category: catCostumes,
-      image:
-        'https://images.unsplash.com/photo-1520975916090-3105956dac38?auto=format&fit=crop&w=1200&q=80',
-      images: [
-        'https://images.unsplash.com/photo-1520975916090-3105956dac38?auto=format&fit=crop&w=1200&q=80',
-        'https://images.unsplash.com/photo-1520975682071-a0b2b7e3f0c9?auto=format&fit=crop&w=1200&q=80'
-      ],
-      attributes: { brand: 'Atelier', color: 'Bleu', size: 'M/L' },
-      specs: { material: 'Laine mélangée', season: 'Toute saison' },
-      tags: ['mariage', 'costume', 'homme', 'bleu']
-    },
-    {
-      name: 'Costume Gris Anthracite',
-      description: 'Costume moderne, prêt pour l’élégance',
-      longDescription:
-        'Costume gris anthracite au tombé impeccable. Conçu pour une tenue élégante et confortable, du bureau aux grandes occasions.',
-      price: 140,
-      originalPrice: 175,
-      inStock: 8,
-      status: 'active',
-      category: catCostumes,
-      image:
-        'https://images.unsplash.com/photo-1520975869019-8e4b1cc3a5f1?auto=format&fit=crop&w=1200&q=80',
-      images: [
-        'https://images.unsplash.com/photo-1520975869019-8e4b1cc3a5f1?auto=format&fit=crop&w=1200&q=80',
-        'https://images.unsplash.com/photo-1520975916090-3105956dac38?auto=format&fit=crop&w=1200&q=80'
-      ],
-      attributes: { brand: 'Atelier', color: 'Gris', size: 'S/M/L/XL' },
-      specs: { material: 'Laine', season: 'Mi-saison' },
-      tags: ['costume', 'gris', 'formel']
-    },
-    {
-      name: 'Costume Beige Classique',
-      description: 'Costume léger et élégant',
-      longDescription:
-        'Un costume beige à la coupe moderne, parfait pour les événements en extérieur. Matière respirante et finitions soignées.',
-      price: 135,
-      originalPrice: 170,
-      inStock: 7,
-      status: 'active',
-      category: catCostumes,
-      image:
-        'https://images.unsplash.com/photo-1520975693590-0a8c5b4c5e9b?auto=format&fit=crop&w=1200&q=80',
-      images: [
-        'https://images.unsplash.com/photo-1520975693590-0a8c5b4c5e9b?auto=format&fit=crop&w=1200&q=80',
-        'https://images.unsplash.com/photo-1520975682071-a0b2b7e3f0c9?auto=format&fit=crop&w=1200&q=80'
-      ],
-      attributes: { brand: 'Atelier', color: 'Beige', size: 'M/L/XL' },
-      specs: { material: 'Mélange', season: 'Été' },
-      tags: ['costume', 'beige', 'été']
-    },
-    {
-      name: 'Costume Noir Élégant',
-      description: 'Costume noir pour occasions spéciales',
-      longDescription:
-        'Costume noir intemporel. Coupe ajustée, tissu agréable au toucher et tenue impeccable. Idéal pour les soirées et cérémonies.',
-      price: 150,
-      originalPrice: 190,
-      inStock: 6,
-      status: 'active',
-      category: catCostumes,
-      image:
-        'https://images.unsplash.com/photo-1520975916079-7c0dd1a3d1d0?auto=format&fit=crop&w=1200&q=80',
-      images: [
-        'https://images.unsplash.com/photo-1520975916079-7c0dd1a3d1d0?auto=format&fit=crop&w=1200&q=80',
-        'https://images.unsplash.com/photo-1520975869019-8e4b1cc3a5f1?auto=format&fit=crop&w=1200&q=80'
-      ],
-      attributes: { brand: 'Atelier', color: 'Noir', size: 'S/M/L' },
-      specs: { material: 'Laine', season: 'Toute saison' },
-      tags: ['costume', 'noir', 'soirée']
-    },
-
-    // 5-8 Chemises
-    {
-      name: 'Chemise Blanche',
-      description: 'Chemise formelle en coton',
-      longDescription:
-        'Chemise blanche en coton respirant. Parfaite pour le bureau et les événements professionnels, avec une tenue impeccable.',
-      price: 40,
-      originalPrice: 55,
-      inStock: 20,
-      status: 'active',
-      category: catChemises,
-      image:
-        'https://images.unsplash.com/photo-1520975682030-5d7f52dbb2c7?auto=format&fit=crop&w=1200&q=80',
-      images: [
-        'https://images.unsplash.com/photo-1520975682030-5d7f52dbb2c7?auto=format&fit=crop&w=1200&q=80',
-        'https://images.unsplash.com/photo-1520975916079-7c0dd1a3d1d0?auto=format&fit=crop&w=1200&q=80'
-      ],
-      attributes: { brand: 'Classic', color: 'Blanc', size: 'S/M/L' },
-      specs: { fabric: 'Coton', fit: 'Regular' },
-      tags: ['chemise', 'bureau', 'blanc', 'coton']
-    },
-    {
-      name: 'Chemise Bleu Ciel',
-      description: 'Chemise douce et respirante',
-      longDescription:
-        'Chemise bleu ciel à la coupe confortable. Idéale pour un look frais en journée et facile à porter au quotidien.',
-      price: 42,
-      originalPrice: 58,
-      inStock: 18,
-      status: 'active',
-      category: catChemises,
-      image:
-        'https://images.unsplash.com/photo-1520975682071-a0b2b7e3f0c9?auto=format&fit=crop&w=1200&q=80',
-      images: [
-        'https://images.unsplash.com/photo-1520975682071-a0b2b7e3f0c9?auto=format&fit=crop&w=1200&q=80',
-        'https://images.unsplash.com/photo-1520975916090-3105956dac38?auto=format&fit=crop&w=1200&q=80'
-      ],
-      attributes: { brand: 'Classic', color: 'Bleu', size: 'S/M/L/XL' },
-      specs: { fabric: 'Coton', fit: 'Regular' },
-      tags: ['chemise', 'bleu', 'coton']
-    },
-    {
-      name: 'Chemise Rayée Marine',
-      description: 'Chemise à rayures élégantes',
-      longDescription:
-        'Rayures marines modernes pour un style sûr et raffiné. Confort et maintien pour une tenue impeccablement chic.',
-      price: 48,
-      originalPrice: 62,
+        'Canapé scandinave confortable avec revêtement en tissu gris et pieds en bois naturel. Idéal pour les salons contemporains.',
+      price: 499,
+      originalPrice: 599,
       inStock: 12,
       status: 'active',
-      category: catChemises,
-      image:
-        'https://images.unsplash.com/photo-1520975869019-8e4b1cc3a5f1?auto=format&fit=crop&w=1200&q=80',
+      category: catCanapes,
+      image: 'https://images.pexels.com/photos/1866149/pexels-photo-1866149.jpeg',
       images: [
-        'https://images.unsplash.com/photo-1520975869019-8e4b1cc3a5f1?auto=format&fit=crop&w=1200&q=80',
-        'https://images.unsplash.com/photo-1520975682030-5d7f52dbb2c7?auto=format&fit=crop&w=1200&q=80'
+        'https://images.pexels.com/photos/1866149/pexels-photo-1866149.jpeg',
+        'https://images.pexels.com/photos/276583/pexels-photo-276583.jpeg'
       ],
-      attributes: { brand: 'Atelier', color: 'Marine', size: 'M/L/XL' },
-      specs: { fabric: 'Coton', fit: 'Slim' },
-      tags: ['chemise', 'rayé', 'marine']
-    },
-    {
-      name: 'Polo Noir Chic',
-      description: 'Polo premium pour un style casual',
-      longDescription:
-        'Polo noir élégant, idéal pour un look casual chic. Texture agréable, col bien structuré.',
-      price: 35,
-      originalPrice: 45,
-      inStock: 22,
-      status: 'active',
-      category: catChemises,
-      image:
-        'https://images.unsplash.com/photo-1520975916079-7c0dd1a3d1d0?auto=format&fit=crop&w=1200&q=80',
-      images: [
-        'https://images.unsplash.com/photo-1520975916079-7c0dd1a3d1d0?auto=format&fit=crop&w=1200&q=80',
-        'https://images.unsplash.com/photo-1520975869019-8e4b1cc3a5f1?auto=format&fit=crop&w=1200&q=80'
-      ],
-      attributes: { brand: 'Classic', color: 'Noir', size: 'S/M/L' },
-      specs: { fabric: 'Coton piqué', fit: 'Regular' },
-      tags: ['polo', 'noir', 'casual']
+      attributes: {
+        brand: 'Nordic Home',
+        color: 'Gris',
+        seats: '3 places'
+      },
+      specs: {
+        material: 'Tissu premium',
+        frame: 'Bois massif'
+      },
+      tags: ['canape', 'scandinave', 'salon']
     },
 
-    // 9-12 Chaussures
     {
-      name: 'Basket Running',
-      description: 'Chaussure confortable pour le sport',
+      name: 'Canapé d’Angle Moderne',
+      description: 'Canapé spacieux pour toute la famille',
       longDescription:
-        'Basket de running conçue pour le confort au quotidien. Semelle amortissante et maintien pour accompagner tes entraînements.',
-      price: 70,
-      originalPrice: 90,
+        'Canapé d’angle moderne offrant un confort exceptionnel et un design élégant.',
+      price: 799,
+      originalPrice: 950,
+      inStock: 8,
+      status: 'active',
+      category: catCanapes,
+      image: 'https://images.pexels.com/photos/276583/pexels-photo-276583.jpeg',
+      images: [
+        'https://images.pexels.com/photos/276583/pexels-photo-276583.jpeg',
+        'https://images.pexels.com/photos/1866149/pexels-photo-1866149.jpeg'
+      ],
+      attributes: {
+        brand: 'Urban Living',
+        color: 'Beige',
+        seats: '5 places'
+      },
+      specs: {
+        material: 'Tissu',
+        shape: 'Angle'
+      },
+      tags: ['canape', 'angle', 'moderne']
+    },
+
+    {
+      name: 'Fauteuil Velours Beige',
+      description: 'Fauteuil élégant et confortable',
+      longDescription:
+        'Fauteuil en velours doux avec assise généreuse. Apporte une touche raffinée à votre intérieur.',
+      price: 249,
+      originalPrice: 320,
       inStock: 15,
       status: 'active',
-      category: catSport,
-      image:
-        'https://images.unsplash.com/photo-1528701800489-20f5c2c9e4e3?auto=format&fit=crop&w=1200&q=80',
+      category: catCanapes,
+      image: 'https://images.pexels.com/photos/1571460/pexels-photo-1571460.jpeg',
       images: [
-        'https://images.unsplash.com/photo-1528701800489-20f5c2c9e4e3?auto=format&fit=crop&w=1200&q=80',
-        'https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1200&q=80'
+        'https://images.pexels.com/photos/1571460/pexels-photo-1571460.jpeg'
       ],
-      attributes: { brand: 'RunPro', color: 'Noir/Gris', size: '40/41/42/43' },
-      specs: { type: 'Running', cushioning: 'Amorti' },
-      tags: ['running', 'sport', 'basket']
-    },
-    {
-      name: 'Chaussures Casual Marron',
-      description: 'Baskets casual polyvalentes',
-      longDescription:
-        'Chaussures marron au style intemporel. Confort tout au long de la journée, pour aller au bureau ou sortir en ville.',
-      price: 65,
-      originalPrice: 85,
-      inStock: 14,
-      status: 'active',
-      category: catChaussures,
-      image:
-        'https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=1200&q=80',
-      images: [
-        'https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=1200&q=80',
-        'https://images.unsplash.com/photo-1528701800489-20f5c2c9e4e3?auto=format&fit=crop&w=1200&q=80'
-      ],
-      attributes: { brand: 'Urban', color: 'Marron', size: '40/41/42/43/44' },
-      specs: { type: 'Casual', cushioning: 'Confort' },
-      tags: ['casual', 'marron', 'chaussures']
-    },
-    {
-      name: 'Chaussures De Ville Noires',
-      description: 'Élégance pour le quotidien',
-      longDescription:
-        'Chaussures de ville noires pour un look professionnel. Assise confortable et style affirmé.',
-      price: 90,
-      originalPrice: 120,
-      inStock: 9,
-      status: 'active',
-      category: catChaussures,
-      image:
-        'https://images.unsplash.com/photo-1543163521-1bf539c55dd2?auto=format&fit=crop&w=1200&q=80',
-      images: [
-        'https://images.unsplash.com/photo-1543163521-1bf539c55dd2?auto=format&fit=crop&w=1200&q=80',
-        'https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=1200&q=80'
-      ],
-      attributes: { brand: 'Elegance', color: 'Noir', size: '40/41/42/43' },
-      specs: { type: 'Ville', sole: 'Flexible' },
-      tags: ['ville', 'noir', 'élégant']
-    },
-    {
-      name: 'Sandales d’Été',
-      description: 'Confort à la belle saison',
-      longDescription:
-        'Sandales pensées pour la chaleur. Semelle légère et maintien pour marcher toute la journée.',
-      price: 30,
-      originalPrice: 40,
-      inStock: 25,
-      status: 'active',
-      category: catChaussures,
-      image:
-        'https://images.unsplash.com/photo-1528701800489-20f5c2c9e4e3?auto=format&fit=crop&w=1200&q=80',
-      images: [
-        'https://images.unsplash.com/photo-1528701800489-20f5c2c9e4e3?auto=format&fit=crop&w=1200&q=80',
-        'https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1200&q=80'
-      ],
-      attributes: { brand: 'Summer', color: 'Beige', size: '40/41/42/43' },
-      specs: { type: 'Été', comfort: 'Léger' },
-      tags: ['été', 'sandales', 'confort']
+      attributes: {
+        brand: 'Comfort Plus',
+        color: 'Beige'
+      },
+      specs: {
+        material: 'Velours'
+      },
+      tags: ['fauteuil', 'velours']
     },
 
-    // 13-16 Vêtements & Accessoires
     {
-      name: 'Ceinture Cuir',
-      description: 'Ceinture élégante en cuir',
+      name: 'Pouf Design Rond',
+      description: 'Pouf décoratif polyvalent',
       longDescription:
-        'Ceinture en cuir souple, design classique. Parfaite pour habiller un look formel ou casual.',
-      price: 25,
-      originalPrice: 35,
-      inStock: 30,
+        'Pouf moderne pouvant servir d’assise supplémentaire ou de repose-pieds.',
+      price: 89,
+      originalPrice: 120,
+      inStock: 20,
       status: 'active',
-      category: catVetAcc,
-      image:
-        'https://images.unsplash.com/photo-1520975682030-5d7f52dbb2c7?auto=format&fit=crop&w=1200&q=80',
+      category: catCanapes,
+      image: 'https://images.pexels.com/photos/6969831/pexels-photo-6969831.jpeg',
       images: [
-        'https://images.unsplash.com/photo-1520975682030-5d7f52dbb2c7?auto=format&fit=crop&w=1200&q=80',
-        'https://images.unsplash.com/photo-1543163521-1bf539c55dd2?auto=format&fit=crop&w=1200&q=80'
+        'https://images.pexels.com/photos/6969831/pexels-photo-6969831.jpeg'
       ],
-      attributes: { brand: 'LeatherCo', color: 'Brun', size: 'S/M/L' },
-      specs: { material: 'Cuir', buckle: 'Classique' },
-      tags: ['ceinture', 'cuir', 'accessoire']
+      attributes: {
+        brand: 'Design Home',
+        color: 'Crème'
+      },
+      specs: {
+        material: 'Tissu'
+      },
+      tags: ['pouf', 'deco']
     },
     {
-      name: 'Casquette Sport',
-      description: 'Casquette légère pour l’extérieur',
+      name: 'Table Basse Bois Massif',
+      description: 'Table basse élégante en bois naturel',
       longDescription:
-        'Casquette idéale pour le sport et les sorties. Légère, ajustable, protège efficacement du soleil.',
-      price: 18,
-      originalPrice: 25,
-      inStock: 40,
+        'Table basse robuste réalisée en bois massif avec finition naturelle.',
+      price: 199,
+      originalPrice: 250,
+      inStock: 10,
       status: 'active',
-      category: catVetAcc,
-      image:
-        'https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1200&q=80',
+      category: catTables,
+      image: 'https://images.pexels.com/photos/3932930/pexels-photo-3932930.jpeg',
       images: [
-        'https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1200&q=80',
-        'https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=1200&q=80'
+        'https://images.pexels.com/photos/3932930/pexels-photo-3932930.jpeg'
       ],
-      attributes: { brand: 'Sporty', color: 'Noir', size: 'Réglable' },
-      specs: { material: 'Tissu respirant', visor: 'Courte' },
-      tags: ['casquette', 'sport', 'extérieur']
+      attributes: {
+        brand: 'WoodArt',
+        color: 'Naturel'
+      },
+      specs: {
+        material: 'Chêne massif'
+      },
+      tags: ['table', 'salon']
     },
+
     {
-      name: 'Veste Légère',
-      description: 'Veste fine pour les journées fraîches',
+      name: 'Table à Manger Chêne',
+      description: 'Grande table familiale',
       longDescription:
-        'Veste légère à porter en mi-saison. Confortable, facile à superposer, parfaite pour sortir sans se refroidir.',
-      price: 55,
-      originalPrice: 70,
+        'Table à manger en chêne conçue pour accueillir jusqu’à 8 personnes.',
+      price: 599,
+      originalPrice: 720,
+      inStock: 6,
+      status: 'active',
+      category: catTables,
+      image: 'https://images.pexels.com/photos/1080721/pexels-photo-1080721.jpeg',
+      images: [
+        'https://images.pexels.com/photos/1080721/pexels-photo-1080721.jpeg'
+      ],
+      attributes: {
+        brand: 'WoodArt'
+      },
+      specs: {
+        material: 'Chêne'
+      },
+      tags: ['table', 'manger']
+    },
+
+    {
+      name: 'Bureau Minimaliste',
+      description: 'Bureau moderne pour télétravail',
+      longDescription:
+        'Bureau compact et élégant offrant un espace de travail confortable.',
+      price: 279,
+      originalPrice: 340,
       inStock: 11,
       status: 'active',
-      category: catVetAcc,
-      image:
-        'https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=1200&q=80',
+      category: catTables,
+      image: 'https://images.pexels.com/photos/667838/pexels-photo-667838.jpeg',
       images: [
-        'https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=1200&q=80',
-        'https://images.unsplash.com/photo-1520975869019-8e4b1cc3a5f1?auto=format&fit=crop&w=1200&q=80'
+        'https://images.pexels.com/photos/667838/pexels-photo-667838.jpeg'
       ],
-      attributes: { brand: 'Urban', color: 'Gris', size: 'S/M/L/XL' },
-      specs: { material: 'Mélange', season: 'Mi-saison' },
-      tags: ['veste', 'mi-saison', 'urbain']
-    },
-    {
-      name: 'Sac à Dos Noir',
-      description: 'Sac à dos pratique et robuste',
-      longDescription:
-        'Sac à dos noir spacieux, idéal pour le quotidien. Portage confortable et compartiments pour organiser tes affaires.',
-      price: 45,
-      originalPrice: 60,
-      inStock: 13,
-      status: 'active',
-      category: catVetAcc,
-      image:
-        'https://images.unsplash.com/photo-1543163521-1bf539c55dd2?auto=format&fit=crop&w=1200&q=80',
-      images: [
-        'https://images.unsplash.com/photo-1543163521-1bf539c55dd2?auto=format&fit=crop&w=1200&q=80',
-        'https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1200&q=80'
-      ],
-      attributes: { brand: 'BackPack', color: 'Noir', size: '24L' },
-      specs: { material: 'Tissu résistant', compartments: 'Multiple' },
-      tags: ['sac', 'dos', 'accessoire']
+      attributes: {
+        brand: 'OfficePro'
+      },
+      specs: {
+        material: 'Bois et métal'
+      },
+      tags: ['bureau']
     },
 
-    // 17-20 Sport
     {
-      name: 'Legging Technique',
-      description: 'Legging respirant pour entraînement',
+      name: 'Console Moderne',
+      description: 'Console décorative pour entrée',
       longDescription:
-        'Legging technique offrant maintien et confort. Tissu respirant pour les séances de sport intensives.',
-      price: 38,
-      originalPrice: 50,
-      inStock: 19,
-      status: 'active',
-      category: catSport,
-      image:
-        'https://images.unsplash.com/photo-1528701800489-20f5c2c9e4e3?auto=format&fit=crop&w=1200&q=80',
-      images: [
-        'https://images.unsplash.com/photo-1528701800489-20f5c2c9e4e3?auto=format&fit=crop&w=1200&q=80',
-        'https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1200&q=80'
-      ],
-      attributes: { brand: 'Active', color: 'Noir', size: 'S/M/L' },
-      specs: { material: 'Élastique', tech: 'Respirant' },
-      tags: ['sport', 'legging', 'training']
-    },
-    {
-      name: 'T-Shirt Training Blanc',
-      description: 'T-shirt léger pour la performance',
-      longDescription:
-        'T-shirt training blanc à séchage rapide. Conçu pour maximiser le confort et la liberté de mouvement.',
-      price: 22,
-      originalPrice: 30,
-      inStock: 28,
-      status: 'active',
-      category: catSport,
-      image:
-        'https://images.unsplash.com/photo-1520975682030-5d7f52dbb2c7?auto=format&fit=crop&w=1200&q=80',
-      images: [
-        'https://images.unsplash.com/photo-1520975682030-5d7f52dbb2c7?auto=format&fit=crop&w=1200&q=80',
-        'https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=1200&q=80'
-      ],
-      attributes: { brand: 'Active', color: 'Blanc', size: 'S/M/L/XL' },
-      specs: { fabric: 'Tech', dryFast: true },
-      tags: ['t-shirt', 'training', 'blanc']
-    },
-    {
-      name: 'Short de Sport Bleu',
-      description: 'Short confortable pour courir',
-      longDescription:
-        'Short de sport bleu. Tissu léger, poches pratiques, et coupe qui accompagne chaque mouvement.',
-      price: 24,
-      originalPrice: 32,
-      inStock: 17,
-      status: 'active',
-      category: catSport,
-      image:
-        'https://images.unsplash.com/photo-1520975869019-8e4b1cc3a5f1?auto=format&fit=crop&w=1200&q=80',
-      images: [
-        'https://images.unsplash.com/photo-1520975869019-8e4b1cc3a5f1?auto=format&fit=crop&w=1200&q=80',
-        'https://images.unsplash.com/photo-1528701800489-20f5c2c9e4e3?auto=format&fit=crop&w=1200&q=80'
-      ],
-      attributes: { brand: 'Active', color: 'Bleu', size: 'S/M/L/XL' },
-      specs: { fabric: 'Léger', pockets: true },
-      tags: ['short', 'sport', 'courir']
-    },
-    {
-      name: 'Hoodie Gris',
-      description: 'Hoodie chaud et confortable',
-      longDescription:
-        'Hoodie gris pour rester au chaud. Matière douce, capuche confortable et finitions solides.',
-      price: 52,
-      originalPrice: 65,
+        'Console élégante parfaite pour mettre en valeur vos objets décoratifs.',
+      price: 189,
+      originalPrice: 230,
       inStock: 9,
       status: 'active',
-      category: catVetAcc,
-      image:
-        'https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=1200&q=80',
+      category: catTables,
+      image: 'https://images.pexels.com/photos/2062426/pexels-photo-2062426.jpeg',
       images: [
-        'https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=1200&q=80',
-        'https://images.unsplash.com/photo-1520975869019-8e4b1cc3a5f1?auto=format&fit=crop&w=1200&q=80'
+        'https://images.pexels.com/photos/2062426/pexels-photo-2062426.jpeg'
       ],
-      attributes: { brand: 'Comfy', color: 'Gris', size: 'S/M/L/XL' },
-      specs: { material: 'Coton', warmth: 'Moyenne' },
-      tags: ['hoodie', 'gris', 'confort']
+      attributes: {
+        brand: 'Urban Decor'
+      },
+      specs: {
+        material: 'Bois MDF'
+      },
+      tags: ['console']
+    },
+    {
+      name: 'Lit Queen Size Moderne',
+      price: 699,
+      originalPrice: 850,
+      inStock: 7,
+      status: 'active',
+      category: catChambres,
+      image: 'https://images.pexels.com/photos/271624/pexels-photo-271624.jpeg',
+      tags: ['lit', 'chambre']
+    },
+
+    {
+      name: 'Table de Chevet Blanche',
+      price: 79,
+      originalPrice: 99,
+      inStock: 25,
+      status: 'active',
+      category: catChambres,
+      image: 'https://images.pexels.com/photos/1648768/pexels-photo-1648768.jpeg',
+      tags: ['chevet']
+    },
+
+    {
+      name: 'Armoire Contemporaine',
+      price: 549,
+      originalPrice: 650,
+      inStock: 5,
+      status: 'active',
+      category: catChambres,
+      image: 'https://images.pexels.com/photos/271743/pexels-photo-271743.jpeg',
+      tags: ['armoire']
+    },
+
+    {
+      name: 'Commode Bois Naturel',
+      price: 229,
+      originalPrice: 290,
+      inStock: 10,
+      status: 'active',
+      category: catChambres,
+      image: 'https://images.pexels.com/photos/5824519/pexels-photo-5824519.jpeg',
+      tags: ['commode']
+    },
+
+    {
+      name: 'Miroir Rond Doré',
+      price: 99,
+      originalPrice: 129,
+      inStock: 20,
+      status: 'active',
+      category: catDecoration,
+      image: 'https://images.pexels.com/photos/6492403/pexels-photo-6492403.jpeg',
+      tags: ['miroir']
+    },
+
+    {
+      name: 'Vase Céramique Design',
+      price: 45,
+      originalPrice: 60,
+      inStock: 30,
+      status: 'active',
+      category: catDecoration,
+      image: 'https://images.pexels.com/photos/4207892/pexels-photo-4207892.jpeg',
+      tags: ['vase']
+    },
+
+    {
+      name: 'Tableau Abstrait Moderne',
+      price: 120,
+      originalPrice: 160,
+      inStock: 14,
+      status: 'active',
+      category: catDecoration,
+      image: 'https://images.pexels.com/photos/1573434/pexels-photo-1573434.jpeg',
+      tags: ['tableau']
+    },
+
+    {
+      name: 'Horloge Murale Élégante',
+      price: 59,
+      originalPrice: 80,
+      inStock: 18,
+      status: 'active',
+      category: catDecoration,
+      image: 'https://images.pexels.com/photos/707582/pexels-photo-707582.jpeg',
+      tags: ['horloge']
+    },
+
+    {
+      name: 'Lampe de Chevet LED',
+      price: 69,
+      originalPrice: 89,
+      inStock: 22,
+      status: 'active',
+      category: catEclairage,
+      image: 'https://images.pexels.com/photos/112811/pexels-photo-112811.jpeg',
+      tags: ['lampe']
+    },
+
+    {
+      name: 'Suspension Industrielle',
+      price: 149,
+      originalPrice: 190,
+      inStock: 12,
+      status: 'active',
+      category: catEclairage,
+      image: 'https://images.pexels.com/photos/1112598/pexels-photo-1112598.jpeg',
+      tags: ['suspension']
+    },
+
+    {
+      name: 'Lampadaire Moderne',
+      price: 179,
+      originalPrice: 220,
+      inStock: 9,
+      status: 'active',
+      category: catEclairage,
+      image: 'https://images.pexels.com/photos/6585756/pexels-photo-6585756.jpeg',
+      tags: ['lampadaire']
+    },
+
+    {
+      name: 'Applique Murale Design',
+      price: 85,
+      originalPrice: 110,
+      inStock: 16,
+      status: 'active',
+      category: catEclairage,
+      image: 'https://images.pexels.com/photos/6444263/pexels-photo-6444263.jpeg',
+      tags: ['applique']
     }
   ];
 

@@ -3,8 +3,10 @@
 import Link from "next/link";
 import Image from "next/image";
 import { ArrowRight, Shield, Truck, RefreshCw, Headphones, Star, ChevronRight } from "lucide-react";
-import { PRODUCTS, CATEGORIES } from "@/data/products";
 import ProductCard from "@/components/ProductCard";
+import { getCategories } from "@/services/categoryService";
+
+
 import SearchBar from "@/components/SearchBar";
 import { useState, useEffect } from "react";
 import { getProducts } from "@/services/productService";
@@ -13,25 +15,36 @@ import { Product } from "@/types";
 export default function HomePage() {
   const [searchQuery, setSearchQuery] = useState("");
   const [products, setProducts] = useState<Product[]>([]);
+  const [categories, setCategories] = useState<string[]>(["Toutes"]);
   const [loading, setLoading] = useState(true);
 
+
   useEffect(() => {
-    const loadProducts = async () => {
+    const load = async () => {
       try {
-        const apiProducts = await getProducts();
+        const [apiProducts, apiCategories] = await Promise.all([
+          getProducts(),
+          getCategories(),
+        ]);
+
         if (apiProducts && apiProducts.length > 0) {
           setProducts(apiProducts);
         }
+
+        if (apiCategories && apiCategories.length > 0) {
+          const names = Array.from(new Set(apiCategories.map((c) => c.name))).filter(Boolean);
+          setCategories(["Toutes", ...names]);
+        }
       } catch (error) {
-        console.error("Erreur lors du chargement des produits:", error);
-        // Garder les données locales comme fallback
+        console.error("Erreur lors du chargement des produits/catégories:", error);
       } finally {
         setLoading(false);
       }
     };
 
-    loadProducts();
+    load();
   }, []);
+
 
   const featured = products.slice(0, 4);
 
@@ -197,8 +210,8 @@ export default function HomePage() {
               position: "relative",
             }}
           >
-            {featured.map((p, i) => (
-              <Link key={p.id} href={`/product/${p.id}`} style={{ textDecoration: "none" }}>
+              {featured.map((p, i) => (
+              <Link key={p.id ?? `${p.name}-${i}`} href={`/product/${p.id}`} style={{ textDecoration: "none" }}>
                 <div
                   className="card-hover"
                   style={{
@@ -328,8 +341,15 @@ export default function HomePage() {
         </div>
 
         <div style={{ display: "flex", gap: "12px", flexWrap: "wrap" }}>
-          {CATEGORIES.filter((c) => c !== "Toutes").map((cat) => (
-            <Link key={cat} href={`/products?category=${cat}`} style={{ textDecoration: "none" }}>
+          {categories
+            .filter((c: string) => c !== "Toutes")
+            .map((cat: string) => (
+              <Link
+                key={cat}
+                href={`/products?category=${encodeURIComponent(cat)}`}
+                style={{ textDecoration: "none" }}
+              >
+
               <div
                 className="card-hover"
                 style={{
@@ -349,8 +369,9 @@ export default function HomePage() {
                 {cat}
                 <ChevronRight size={14} style={{ color: "var(--accent-gold-dim)" }} />
               </div>
-            </Link>
-          ))}
+              </Link>
+            ))}
+
         </div>
       </section>
 

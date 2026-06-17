@@ -1,6 +1,9 @@
 import { apiFetch } from "./apiClient";
 
-export type SemanticSearchResponse = any;
+import { Product } from "@/types";
+
+// Backend returns the raw aggregation results (Product documents)
+export type SemanticSearchResponse = Product[];
 
 export async function semanticSearch(query: string): Promise<SemanticSearchResponse> {
   return apiFetch<SemanticSearchResponse>("/api/search", {
@@ -8,4 +11,5 @@ export async function semanticSearch(query: string): Promise<SemanticSearchRespo
     body: JSON.stringify({ query }),
   });
 }
+
 
