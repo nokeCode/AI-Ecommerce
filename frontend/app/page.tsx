@@ -166,7 +166,7 @@ export default function HomePage() {
 
             {/* Search */}
             <div className="animate-fade-in-up delay-300" style={{ marginBottom: "32px" }}>
-              <SearchBar onSearch={setSearchQuery} />
+              <SearchBar onSearch={setSearchQuery} isPage />
             </div>
 
             <div className="animate-fade-in-up delay-400" style={{ display: "flex", gap: "12px", flexWrap: "wrap" }}>

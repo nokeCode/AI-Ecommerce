@@ -208,16 +208,19 @@ export default function SearchBar({ onSearch, isPage = false }: SearchBarProps) 
       {showDropdown && (
         <div
           style={{
-            position: "absolute",
-            top: "calc(100% + 8px)",
-            left: 0,
-            right: 0,
+            // Sur la home, on évite le dropdown "overlay" qui recouvre les boutons.
+            // On le laisse dans le flux pour que le layout pousse le reste vers le bas.
+            position: isPage ? "relative" : "absolute",
+            top: isPage ? "auto" : "calc(100% + 8px)",
+            left: isPage ? "auto" : 0,
+            right: isPage ? "auto" : 0,
+            marginTop: isPage ? 8 : 0,
             background: "var(--bg-card)",
             border: "1px solid var(--border-medium)",
             borderRadius: "12px",
             overflow: "hidden",
-            boxShadow: "0 20px 60px rgba(0,0,0,0.5)",
-            zIndex: 200,
+            boxShadow: isPage ? "0 10px 30px rgba(0,0,0,0.15)" : "0 20px 60px rgba(0,0,0,0.5)",
+            zIndex: isPage ? "auto" : 200,
           }}
           className="animate-fade-in"
         >
