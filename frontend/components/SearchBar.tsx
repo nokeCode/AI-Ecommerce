@@ -54,7 +54,12 @@ export default function SearchBar({ onSearch, isPage = false }: SearchBarProps) 
         // Essayer la recherche sémantique d'abord
         const apiResults = await semanticSearch(query);
         if (apiResults && Array.isArray(apiResults)) {
-          setResults(apiResults);
+          // Normalisation: Mongo renvoie _id, alors que l'UI attend id
+          const normalized = apiResults.map((p) => ({
+            ...p,
+            id: p.id ?? p._id,
+          }));
+          setResults(normalized);
           setAiSuggestion(
             `${apiResults.length} résultat${apiResults.length > 1 ? "s" : ""} correspondant à "${query}"`
           );

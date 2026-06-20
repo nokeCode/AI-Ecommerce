@@ -121,7 +121,7 @@ function ProductsContent() {
     }
 
     return list;
-  }, [selectedCategory, searchQuery, priceRange, sortBy]);
+  }, [products, selectedCategory, searchQuery, priceRange, sortBy]);
 
   return (
     <div style={{ maxWidth: "1280px", margin: "0 auto", padding: "40px 24px" }}>
