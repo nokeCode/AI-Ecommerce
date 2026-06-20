@@ -28,6 +28,7 @@ function ProductsContent() {
   const [priceRange, setPriceRange] = useState<[number, number]>([0, 500]);
   const [gridCols, setGridCols] = useState<3 | 4>(3);
   const [products, setProducts] = useState<Product[]>([]);
+  const [searchResults, setSearchResults] = useState<Product[]>([]);
   const [categories, setCategories] = useState<string[]>(["Toutes"]);
   const [loading, setLoading] = useState(true);
 
@@ -70,7 +71,10 @@ function ProductsContent() {
       .toLowerCase();
 
   const filtered = useMemo(() => {
-    let list = [...products];
+    // Si une recherche (texte tapé dans la barre) est active, on part des résultats
+    // réels renvoyés par le backend (recherche classique ou vectorielle) — pas d'un
+    // second filtre texte local déconnecté du premier.
+    let list = searchQuery ? [...searchResults] : [...products];
 
     // Si l'URL contient une catégorie vide / mal encodée, on évite un filtre qui vide toute la liste.
     const normalizedSelectedCategory = normalize(selectedCategory);
@@ -80,22 +84,6 @@ function ProductsContent() {
       list = list.filter((p) => normalize(p.category) === normalizedSelectedCategory);
     }
 
-
-
-    if (searchQuery) {
-      const q = searchQuery.toLowerCase();
-      list = list.filter((p) => {
-        const name = p.name ?? "";
-        const category = p.category ?? "";
-        const description = p.description ?? "";
-
-        return (
-          name.toLowerCase().includes(q) ||
-          category.toLowerCase().includes(q) ||
-          description.toLowerCase().includes(q)
-        );
-      });
-    }
 
     list = list.filter(
       (p) => p.price >= priceRange[0] && p.price <= priceRange[1]
@@ -121,7 +109,7 @@ function ProductsContent() {
     }
 
     return list;
-  }, [products, selectedCategory, searchQuery, priceRange, sortBy]);
+  }, [products, searchResults, searchQuery, selectedCategory, priceRange, sortBy]);
 
   return (
     <div style={{ maxWidth: "1280px", margin: "0 auto", padding: "40px 24px" }}>
@@ -150,7 +138,13 @@ function ProductsContent() {
         >
           Nos Produits
         </h1>
-        <SearchBar onSearch={setSearchQuery} isPage />
+        <SearchBar
+          onSearch={(q, results) => {
+            setSearchQuery(q);
+            setSearchResults(results);
+          }}
+          isPage
+        />
       </div>
 
       <div style={{ display: "grid", gridTemplateColumns: "260px 1fr", gap: "32px", alignItems: "start" }}>
