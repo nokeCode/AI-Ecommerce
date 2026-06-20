@@ -9,7 +9,7 @@ import Image from "next/image";
 import { semanticSearch } from "@/services/searchService";
 
 interface SearchBarProps {
-  onSearch?: (query: string) => void;
+  onSearch?: (query: string, results: Product[]) => void;
   isPage?: boolean;
 }
 
@@ -38,6 +38,7 @@ export default function SearchBar({ onSearch, isPage = false }: SearchBarProps) 
         setResults([]);
         setAiSuggestion("");
         setIsSearching(false);
+        if (onSearch) onSearch(query, []);
       }, 0);
       return () => window.clearTimeout(id);
     }
@@ -50,54 +51,53 @@ export default function SearchBar({ onSearch, isPage = false }: SearchBarProps) 
 
 
     const timer = setTimeout(async () => {
+      let finalResults: Product[] = [];
+      let suggestionText = "";
+
       try {
         // Essayer la recherche sémantique d'abord
         const apiResults = await semanticSearch(query);
         if (apiResults && Array.isArray(apiResults)) {
-          // Normalisation: Mongo renvoie _id, alors que l'UI attend id
-          const normalized = apiResults.map((p) => ({
-            ...p,
-            id: p.id ?? p._id,
-          }));
-          setResults(normalized);
-          setAiSuggestion(
-            `${apiResults.length} résultat${apiResults.length > 1 ? "s" : ""} correspondant à "${query}"`
-          );
+          finalResults = apiResults;
+          suggestionText =
+            apiResults.length > 0
+              ? `${apiResults.length} résultat${apiResults.length > 1 ? "s" : ""} correspondant à "${query}"`
+              : `Aucun résultat — essayez "canapé", "table", "lampe"`;
         } else {
           // Fallback à la recherche locale
           const q = query.toLowerCase();
-          const filtered = PRODUCTS.filter(
+          const localFiltered = PRODUCTS.filter(
             (p) =>
               p.name.toLowerCase().includes(q) ||
               p.category.toLowerCase().includes(q) ||
               p.description.toLowerCase().includes(q)
           );
-          setResults(filtered);
-        setAiSuggestion(
-          filtered.length > 0
-            ? `${filtered.length} résultat${filtered.length > 1 ? "s" : ""} correspondant à "${query}"`
-            : `Aucun résultat exact — essayez "décoration", "meuble" ou "chambre"`
-        );
+          finalResults = localFiltered;
+          suggestionText =
+            localFiltered.length > 0
+              ? `${localFiltered.length} résultat${localFiltered.length > 1 ? "s" : ""} correspondant à "${query}"`
+              : `Aucun résultat exact — essayez "décoration", "meuble" ou "chambre"`;
         }
       } catch (error) {
         console.error("Erreur recherche:", error);
         // Fallback à la recherche locale
         const q = query.toLowerCase();
-        const filtered = PRODUCTS.filter(
+        const localFiltered = PRODUCTS.filter(
           (p) =>
             p.name.toLowerCase().includes(q) ||
             p.category.toLowerCase().includes(q) ||
             p.description.toLowerCase().includes(q)
         );
-        setResults(filtered);
-        setAiSuggestion(
-          filtered.length > 0
-            ? `${filtered.length} résultat${filtered.length > 1 ? "s" : ""} correspondant à "${query}"`
-              : `Aucun résultat exact — essayez "canapé", "table", "lampe"`
-        );
+        finalResults = localFiltered;
+        suggestionText =
+          localFiltered.length > 0
+            ? `${localFiltered.length} résultat${localFiltered.length > 1 ? "s" : ""} correspondant à "${query}"`
+            : `Aucun résultat exact — essayez "canapé", "table", "lampe"`;
       }
 
-      if (onSearch) onSearch(query);
+      setResults(finalResults);
+      setAiSuggestion(suggestionText);
+      if (onSearch) onSearch(query, finalResults);
       setIsSearching(false);
     }, 250);
 
