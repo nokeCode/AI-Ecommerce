@@ -4,7 +4,7 @@ async function test() {
 
   const embedding =
     await getEmbedding(
-      'Chaussure de sport confortable'
+      'bureau de conférence'
     );
 
   console.log(
