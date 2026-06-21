@@ -210,7 +210,22 @@ Consignes :
     const llmAnswer = await generateAnswer(prompt);
     const answer = llmAnswer || buildFallbackResponse(products, userPrompt);
 
-    return streamTextResponse(res, answer);
+    const sanitizedProducts = products.map((product) => ({
+      id: product._id,
+      name: product.name,
+      price: product.price,
+      description: product.description,
+      score: product.score,
+    }));
+
+    // Append a markdown list with links to product pages
+    const productListText = sanitizedProducts
+      .map((p) => `- [${p.name}](/product/${p.id}) - ${p.price}€`)
+      .join('\n');
+
+    const finalText = `${answer}\n\nProduits recommandés:\n${productListText}`;
+
+    return streamTextResponse(res, finalText);
   } catch (error) {
     console.error('[chatController] error:', error);
     return res.status(500).type('text/plain').send(error.message || 'Une erreur serveur est survenue.');
