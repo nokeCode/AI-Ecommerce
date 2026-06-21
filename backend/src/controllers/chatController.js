@@ -1,6 +1,12 @@
 const Product = require('../models/Product');
 const { getEmbedding } = require('../config/embedding');
 
+// En dessous de ce score de similarité, on considère que la question
+// n'a aucun rapport avec le catalogue (texte aléatoire, hors-sujet, etc.)
+// Le score $vectorSearch pour un index "cosine" est compris entre 0 et 1.
+// À calibrer en regardant les scores réels dans vos logs (voir console.log plus bas).
+const RELEVANCE_THRESHOLD = 0.6;
+
 const buildProductContext = (products) => {
   return products
     .map((product, index) => {
@@ -10,9 +16,12 @@ const buildProductContext = (products) => {
     .join('\n\n');
 };
 
+// Réponse de secours utilisée UNIQUEMENT si l'appel à Gemini échoue
+// (clé absente, quota dépassé, panne réseau...). Elle ne doit jamais
+// servir de comportement "normal" de l'application.
 const buildFallbackResponse = (products, message) => {
   if (!products || products.length === 0) {
-    return "Désolé, je n'ai trouvé aucun produit pertinent pour votre recherche.";
+    return "Désolé, je n'ai pas trouvé de produit en lien avec votre demande. Pouvez-vous préciser votre recherche ?";
   }
 
   const lines = ['Je vous recommande :'];
@@ -31,8 +40,14 @@ const buildFallbackResponse = (products, message) => {
   return lines.join('\n');
 };
 
-const callOpenAI = async (prompt) => {
-  const apiKey = process.env.OPENAI_API_KEY;
+// Message renvoyé quand ni le LLM ni les produits ne permettent de répondre
+// (ex: texte incompréhensible, hors-sujet).
+const buildNoMatchResponse = () => {
+  return "Désolé, je n'ai pas compris votre demande. Pouvez-vous reformuler ou préciser ce que vous recherchez (type de meuble, budget, pièce à aménager...) ?";
+};
+
+const callGemini = async (prompt) => {
+  const apiKey = process.env.GEMINI_API_KEY;
   if (!apiKey) {
     return null;
   }
@@ -41,39 +56,43 @@ const callOpenAI = async (prompt) => {
     throw new Error('fetch n\u2019est pas disponible dans cet environnement Node.js');
   }
 
-  const response = await fetch('https://api.openai.com/v1/chat/completions', {
+  const model = process.env.GEMINI_MODEL || 'gemini-2.5-flash';
+  const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`;
+
+  const response = await fetch(url, {
     method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${apiKey}`,
-    },
+    headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
-      model: 'gpt-3.5-turbo',
-      messages: [
-        { role: 'system', content: 'Tu es un conseiller e-commerce.' },
-        { role: 'user', content: prompt },
+      contents: [
+        {
+          role: 'user',
+          parts: [{ text: prompt }],
+        },
       ],
-      max_tokens: 250,
-      temperature: 0.3,
+      generationConfig: {
+        maxOutputTokens: 300,
+        temperature: 0.3,
+      },
     }),
   });
 
   const data = await response.json();
   if (!response.ok) {
-    throw new Error(data?.error?.message || 'OpenAI API request failed');
+    throw new Error(data?.error?.message || 'Gemini API request failed');
   }
 
-  return data.choices?.[0]?.message?.content?.trim() || null;
+  const text = data?.candidates?.[0]?.content?.parts?.map((part) => part.text).join('').trim();
+  return text || null;
 };
 
 const generateAnswer = async (prompt) => {
   try {
-    const openAIAnswer = await callOpenAI(prompt);
-    if (openAIAnswer) {
-      return openAIAnswer;
+    const geminiAnswer = await callGemini(prompt);
+    if (geminiAnswer) {
+      return geminiAnswer;
     }
   } catch (error) {
-    console.warn('[chatController] OpenAI fallback:', error.message);
+    console.warn('[chatController] Gemini fallback:', error.message);
   }
 
   return null;
@@ -137,14 +156,14 @@ const handleChatMessage = async (req, res) => {
 
     const queryEmbedding = await getEmbedding(userPrompt);
 
-    const products = await Product.aggregate([
+    const rawResults = await Product.aggregate([
       {
         $vectorSearch: {
           index: 'vector_index',
           path: 'embedding',
           queryVector: queryEmbedding,
           numCandidates: 100,
-          limit: 3,
+          limit: 5,
         },
       },
       {
@@ -160,13 +179,33 @@ const handleChatMessage = async (req, res) => {
       },
     ]);
 
+    // Utile pour calibrer RELEVANCE_THRESHOLD : décommentez si besoin.
+    // console.log('[chatController] scores:', rawResults.map((p) => `${p.name}: ${p.score.toFixed(3)}`));
+
+    // On ne garde que les produits réellement pertinents par rapport à la
+    // question. $vectorSearch renvoie toujours les "moins mauvais"
+    // résultats même pour un texte sans rapport avec le catalogue, donc
+    // il faut filtrer par score, pas seulement prendre le top N.
+    const products = rawResults.filter((product) => product.score >= RELEVANCE_THRESHOLD);
+
     if (!products || products.length === 0) {
-      const fallback = "Désolé, je n'ai trouvé aucun produit pertinent pour votre recherche.";
-      return streamTextResponse(res, fallback);
+      return streamTextResponse(res, buildNoMatchResponse());
     }
 
     const context = buildProductContext(products);
-    const prompt = `Tu es un conseiller e-commerce.\n\nProduits disponibles :\n${context}\n\nQuestion : ${userPrompt}\n\nRéponds en recommandant uniquement les produits pertinents.`;
+    const prompt = `Tu es un conseiller e-commerce pour un magasin de meubles. Réponds toujours en français, de façon naturelle et concise.
+
+Voici les produits de notre catalogue qui semblent en lien avec la question de l'utilisateur :
+${context}
+
+Question de l'utilisateur : "${userPrompt}"
+
+Consignes :
+- Si l'utilisateur pose une question générale (ex: quels produits avez-vous, que proposez-vous), présente simplement les produits ci-dessus sans forcer une "recommandation".
+- Si l'utilisateur cherche un produit précis ou demande un conseil, recommande le(s) produit(s) le(s) plus pertinent(s) parmi la liste, en expliquant brièvement pourquoi.
+- N'invente aucun produit, prix ou caractéristique qui ne figure pas dans la liste ci-dessus.
+- Si aucun produit de la liste ne correspond vraiment à la question, dis-le clairement plutôt que de recommander un produit non pertinent.
+- Reste bref (3 à 5 phrases maximum).`;
 
     const llmAnswer = await generateAnswer(prompt);
     const answer = llmAnswer || buildFallbackResponse(products, userPrompt);
