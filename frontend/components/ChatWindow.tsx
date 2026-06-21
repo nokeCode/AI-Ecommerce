@@ -13,8 +13,13 @@ type Message = {
 
 export default function ChatWindow() {
   const [messages, setMessages] = useState<Message[]>([
-    { role: "assistant", content: "Bonjour ! Je peux vous aider à trouver une tenue élégante pour un mariage." },
+    {
+      role: "assistant",
+      content:
+        "Bonjour et bienvenue chez Luxe Boutique! ✨ Vous cherchez à sublimer votre intérieur ou à dénicher la pièce parfaite ? Je suis là pour vous conseiller. Que cherchez-vous aujourd'hui ? ",
+    },
   ]);
+
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -56,9 +61,8 @@ export default function ChatWindow() {
 
   return (
     <div className="mx-auto max-w-3xl rounded-[32px] border border-slate-300 bg-white shadow-xl shadow-slate-200/40">
-      <div className="rounded-t-[32px] bg-slate-900 px-6 py-5 text-white">
+      <div className="rounded-t-[32px] bg-slate-500 px-6 py-5 text-white">
         <div className="text-sm uppercase tracking-[0.32em] text-slate-300">Assistant IA</div>
-        <div className="mt-2 text-2xl font-semibold">Votre conseiller mode pour mariage</div>
       </div>
 
       <div className="min-h-[420px] max-h-[520px] overflow-y-auto px-6 py-5 space-y-4 bg-slate-50">

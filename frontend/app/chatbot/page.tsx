@@ -1,5 +1,6 @@
 import ChatWindow from "@/components/ChatWindow";
 
+
 export default function ChatbotPage() {
   return (
     <main className="min-h-screen bg-[var(--bg-primary)] py-10">

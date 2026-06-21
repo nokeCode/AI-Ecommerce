@@ -19,7 +19,7 @@ export default function ChatInput({ value, onChange, onSend, disabled = false }:
             onSend();
           }
         }}
-        placeholder="Je cherche un costume pour un mariage..."
+        placeholder="Je cherche un canapé pour un pétit salon..."
         className="flex-1 rounded-2xl border border-slate-300 bg-white px-4 py-3 text-slate-900 outline-none transition focus:border-slate-500 focus:ring-2 focus:ring-slate-100"
         disabled={disabled}
       />

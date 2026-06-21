@@ -17,8 +17,14 @@ export default function ChatMessage({ role, content }: ChatMessageProps) {
             : "bg-white border border-slate-200 text-slate-900 shadow-sm"
         }`}
       >
-        {content}
+        {content.split("Luxe Boutique").map((part, idx, arr) => (
+          <span key={idx}>
+            {part}
+            {idx < arr.length - 1 ? <span className="font-bold">Luxe Boutique</span> : null}
+          </span>
+        ))}
       </div>
+
     </div>
   );
 }
