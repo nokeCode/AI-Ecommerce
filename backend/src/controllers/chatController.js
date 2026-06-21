@@ -83,6 +83,12 @@ const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
 const extractUserMessage = (body) => {
   if (!body) return null;
+
+  // If body is a raw string (text/plain), return it
+  if (typeof body === 'string' && body.trim()) {
+    return body.trim();
+  }
+
   if (typeof body.message === 'string' && body.message.trim()) {
     return body.message.trim();
   }
