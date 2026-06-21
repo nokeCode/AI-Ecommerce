@@ -1,12 +1,27 @@
 "use client";
 
 type ChatMessageProps = {
-  role: "assistant" | "user";
-  content: string;
+  message: any;
 };
 
-export default function ChatMessage({ role, content }: ChatMessageProps) {
-  const isUser = role === "user";
+function renderMessageText(message: any) {
+  if (Array.isArray(message.parts) && message.parts.length > 0) {
+    return message.parts
+      .filter((part: any) => part.type === "text")
+      .map((part: any) => part.text)
+      .join("");
+  }
+
+  if (typeof message.content === "string") {
+    return message.content;
+  }
+
+  return "";
+}
+
+export default function ChatMessage({ message }: ChatMessageProps) {
+  const isUser = message.role === "user";
+  const content = renderMessageText(message);
 
   return (
     <div className={`flex ${isUser ? "justify-end" : "justify-start"}`}>
@@ -17,14 +32,8 @@ export default function ChatMessage({ role, content }: ChatMessageProps) {
             : "bg-white border border-slate-200 text-slate-900 shadow-sm"
         }`}
       >
-        {content.split("Luxe Boutique").map((part, idx, arr) => (
-          <span key={idx}>
-            {part}
-            {idx < arr.length - 1 ? <span className="font-bold">Luxe Boutique</span> : null}
-          </span>
-        ))}
+        {content}
       </div>
-
     </div>
   );
 }

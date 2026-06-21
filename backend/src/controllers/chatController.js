@@ -79,16 +79,57 @@ const generateAnswer = async (prompt) => {
   return null;
 };
 
+const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
+const extractUserMessage = (body) => {
+  if (!body) return null;
+  if (typeof body.message === 'string' && body.message.trim()) {
+    return body.message.trim();
+  }
+
+  if (Array.isArray(body.messages)) {
+    for (let i = body.messages.length - 1; i >= 0; i -= 1) {
+      const item = body.messages[i];
+      if (item?.role === 'user') {
+        if (typeof item.content === 'string' && item.content.trim()) {
+          return item.content.trim();
+        }
+
+        if (Array.isArray(item.parts)) {
+          return item.parts.map((part) => part?.text ?? '').join('').trim();
+        }
+      }
+    }
+  }
+
+  return null;
+};
+
+const streamTextResponse = async (res, text) => {
+  res.setHeader('Content-Type', 'text/plain; charset=utf-8');
+  res.setHeader('Cache-Control', 'no-cache, no-transform');
+  res.setHeader('X-Accel-Buffering', 'no');
+  res.status(200);
+
+  const chunkSize = 32;
+  for (let pos = 0; pos < text.length; pos += chunkSize) {
+    const chunk = text.slice(pos, pos + chunkSize);
+    res.write(chunk);
+    await sleep(20);
+  }
+
+  res.end();
+};
+
 const handleChatMessage = async (req, res) => {
   try {
-    const { message } = req.body || {};
+    const userPrompt = extractUserMessage(req.body);
 
-    if (!message || typeof message !== 'string' || message.trim().length === 0) {
-      return res.status(400).json({ error: 'Le message est requis.' });
+    if (!userPrompt) {
+      return res.status(400).type('text/plain').send('Le message est requis.');
     }
 
-    const trimmedMessage = message.trim();
-    const queryEmbedding = await getEmbedding(trimmedMessage);
+    const queryEmbedding = await getEmbedding(userPrompt);
 
     const products = await Product.aggregate([
       {
@@ -114,35 +155,20 @@ const handleChatMessage = async (req, res) => {
     ]);
 
     if (!products || products.length === 0) {
-      return res.status(200).json({
-        answer: "Désolé, je n'ai trouvé aucun produit pertinent pour votre recherche.",
-        products: [],
-      });
+      const fallback = "Désolé, je n'ai trouvé aucun produit pertinent pour votre recherche.";
+      return streamTextResponse(res, fallback);
     }
 
     const context = buildProductContext(products);
-    const prompt = `Tu es un conseiller e-commerce.\n\nProduits disponibles :\n${context}\n\nQuestion : ${trimmedMessage}\n\nRéponds en recommandant uniquement les produits pertinents.`;
+    const prompt = `Tu es un conseiller e-commerce.\n\nProduits disponibles :\n${context}\n\nQuestion : ${userPrompt}\n\nRéponds en recommandant uniquement les produits pertinents.`;
 
     const llmAnswer = await generateAnswer(prompt);
-    const answer = llmAnswer || buildFallbackResponse(products, trimmedMessage);
+    const answer = llmAnswer || buildFallbackResponse(products, userPrompt);
 
-    const sanitizedProducts = products.map((product) => ({
-      id: product._id,
-      name: product.name,
-      price: product.price,
-      description: product.description,
-      score: product.score,
-    }));
-
-    return res.status(200).json({
-      answer,
-      products: sanitizedProducts,
-    });
+    return streamTextResponse(res, answer);
   } catch (error) {
     console.error('[chatController] error:', error);
-    return res.status(500).json({
-      error: error.message,
-    });
+    return res.status(500).type('text/plain').send(error.message || 'Une erreur serveur est survenue.');
   }
 };
 
