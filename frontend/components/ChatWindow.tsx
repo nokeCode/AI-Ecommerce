@@ -5,7 +5,9 @@ import { useChat } from "@ai-sdk/react";
 import { TextStreamChatTransport, type UIMessage } from "ai";
 import ChatInput from "@/components/ChatInput";
 import ChatMessage from "@/components/ChatMessage";
+import ReflexionSkeleton from "@/components/ReflexionSkeleton";
 import { useChatStore } from "@/store/chatStore";
+
 
 const CHAT_API = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
 
@@ -79,8 +81,17 @@ export default function ChatWindow() {
           {messages.map((message, index) => (
             <ChatMessage key={`${message.role}-${index}`} message={message} />
           ))}
+
+          {/* Skeleton pendant que le bot traite / génère sa réponse */}
+          {isStreaming && messages.length > 0 ? (
+            <div className="pointer-events-none">
+              <ReflexionSkeleton />
+            </div>
+          ) : null}
+
           <div ref={bottomRef} />
         </div>
+
 
         {serverError || error ? (
           <div className="rounded-2xl border border-rose-200 bg-rose-50 px-4 py-3 text-sm text-rose-700">
