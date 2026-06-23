@@ -1,7 +1,11 @@
 const Stripe = require("stripe");
 
+if (!process.env.STRIPE_SECRET_KEY) {
+  console.error("STRIPE_SECRET_KEY manquant dans .env");
+}
+
 const stripe = new Stripe(
-  process.env.STRIPE_SECRET_KEY
+  process.env.STRIPE_SECRET_KEY || ""
 );
 
 exports.createCheckoutSession = async (req, res) => {
@@ -48,7 +52,9 @@ exports.createCheckoutSession = async (req, res) => {
   } catch (error) {
     console.error("Erreur Stripe:", error);
     res.status(500).json({
-      error: error.message
+      error:
+        error.message ||
+        "Erreur lors de la création de la session Stripe. Vérifiez STRIPE_SECRET_KEY."
     });
   }
 };

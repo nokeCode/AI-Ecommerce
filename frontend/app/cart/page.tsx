@@ -53,7 +53,16 @@ export default function CartPage() {
       );
 
       if (!response.ok) {
-        throw new Error("Erreur lors de la création de la session");
+        let message = await response.text();
+        try {
+          const body = JSON.parse(message);
+          message = body.error || JSON.stringify(body);
+        } catch {
+          // garder le texte brut
+        }
+        throw new Error(
+          `Erreur lors de la création de la session: ${response.status} ${response.statusText} - ${message}`
+        );
       }
 
       const data = await response.json();
