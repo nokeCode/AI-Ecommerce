@@ -10,7 +10,7 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: true,
         unique: true,
-        lowacase : true
+        lowercase : true
     },
     password : {
         type: String,
@@ -31,9 +31,8 @@ const userSchema = new mongoose.Schema({
     }
 });
 
-userSchema.pre('save', function(next){
+userSchema.pre('save', function(){
     this.updatedAt = Date.now();
-    next();
 });
 
 const User = mongoose.model('User', userSchema);
