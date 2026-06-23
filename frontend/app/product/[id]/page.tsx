@@ -6,6 +6,7 @@ import Link from "next/link";
 import { ArrowLeft, ShoppingCart, Star, Shield, Truck, Check, ChevronDown, ChevronUp } from "lucide-react";
 
 import { useCart } from "@/context/CartContext";
+import Skeleton from "@/components/Skeleton";
 import ProductCard from "@/components/ProductCard";
 import { getProductById, getProducts } from "@/services/productService";
 import { Product } from "@/types";
@@ -56,8 +57,152 @@ export default function ProductDetailPage({
 
   if (loading) {
     return (
-      <div style={{ textAlign: "center", padding: "100px 24px" }}>
-        <p style={{ color: "var(--text-primary)" }}>Chargement...</p>
+      <div style={{ maxWidth: "1280px", margin: "0 auto", padding: "40px 24px" }}>
+        {/* Breadcrumb skeleton */}
+        <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "32px" }}>
+          <Skeleton variant="circle" width={18} height={18} radius={9999} />
+          <Skeleton variant="rect" width={100} height={14} radius={8} />
+          <Skeleton variant="rect" width={10} height={14} radius={4} />
+          <Skeleton variant="rect" width={80} height={14} radius={8} />
+          <Skeleton variant="rect" width={10} height={14} radius={4} />
+          <Skeleton variant="rect" width={220} height={14} radius={8} />
+        </div>
+
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "1fr 1fr",
+            gap: "60px",
+            marginBottom: "80px",
+          }}
+        >
+          {/* Images skeleton */}
+          <div>
+            <div
+              style={{
+                aspectRatio: "4/3",
+                borderRadius: "16px",
+                overflow: "hidden",
+                background: "var(--bg-card)",
+                border: "1px solid var(--border-subtle)",
+                marginBottom: "12px",
+                position: "relative",
+              }}
+            >
+              <Skeleton variant="rect" width="100%" height="100%" radius={16} />
+            </div>
+            <div style={{ display: "flex", gap: "10px" }}>
+              {[0, 1, 2].map((i) => (
+                <Skeleton
+                  key={i}
+                  variant="rect"
+                  width={72}
+                  height={72}
+                  radius={10}
+                  style={{ border: "2px solid var(--border-subtle)" }}
+                />
+              ))}
+            </div>
+          </div>
+
+          {/* Product info skeleton */}
+          <div>
+            <Skeleton
+              variant="rect"
+              width={140}
+              height={14}
+              radius={8}
+              style={{ marginBottom: 10, display: "block" }}
+            />
+            <Skeleton
+              variant="rect"
+              width={320}
+              height={38}
+              radius={10}
+              style={{ marginBottom: 16, display: "block" }}
+            />
+
+            <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "20px" }}>
+              <Skeleton variant="rect" width={110} height={16} radius={8} />
+              <Skeleton variant="rect" width={60} height={16} radius={8} />
+              <Skeleton variant="rect" width={90} height={16} radius={8} />
+            </div>
+
+            <div
+              style={{
+                display: "flex",
+                alignItems: "baseline",
+                gap: "12px",
+                marginBottom: "24px",
+                padding: "16px 20px",
+                background: "var(--bg-card)",
+                borderRadius: "12px",
+                border: "1px solid var(--border-subtle)",
+              }}
+            >
+              <Skeleton variant="rect" width={160} height={32} radius={10} />
+              <div style={{ flex: 1, display: "flex", gap: "10px", alignItems: "center" }}>
+                <Skeleton variant="rect" width={120} height={18} radius={8} />
+                <Skeleton variant="rect" width={140} height={24} radius={8} />
+              </div>
+            </div>
+
+            <Skeleton variant="rect" width="100%" height={18} radius={8} style={{ marginBottom: 10 }} />
+            <Skeleton variant="rect" width="95%" height={18} radius={8} style={{ marginBottom: 10 }} />
+            <Skeleton variant="rect" width="90%" height={18} radius={8} style={{ marginBottom: 20 }} />
+
+            {/* Quantity + CTA skeleton */}
+            <div style={{ display: "flex", gap: "16px", alignItems: "center", marginBottom: "20px" }}>
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "8px",
+                  background: "var(--bg-card)",
+                  border: "1px solid var(--border-medium)",
+                  borderRadius: "10px",
+                  padding: "6px 10px",
+                }}
+              >
+                <Skeleton variant="rect" width={32} height={32} radius={8} />
+                <Skeleton variant="rect" width={36} height={22} radius={6} />
+                <Skeleton variant="rect" width={32} height={32} radius={8} />
+              </div>
+              <Skeleton variant="rect" width={260} height={48} radius={10} />
+            </div>
+
+            {/* Trust skeleton */}
+            <div style={{ display: "flex", gap: "16px", flexWrap: "wrap" }}>
+              <Skeleton variant="rect" width={220} height={14} radius={8} />
+              <Skeleton variant="rect" width={200} height={14} radius={8} />
+            </div>
+          </div>
+        </div>
+
+        {/* Tabs skeleton */}
+        <div
+          style={{
+            background: "var(--bg-card)",
+            border: "1px solid var(--border-subtle)",
+            borderRadius: "16px",
+            overflow: "hidden",
+            marginBottom: "80px",
+          }}
+        >
+          <div style={{ display: "flex", borderBottom: "1px solid var(--border-subtle)" }}>
+            {[0, 1, 2].map((i) => (
+              <div key={i} style={{ flex: 1, padding: "16px 28px" }}>
+                <Skeleton variant="rect" width={120} height={14} radius={8} />
+              </div>
+            ))}
+          </div>
+          <div style={{ padding: "32px" }}>
+            <Skeleton variant="rect" width="80%" height={18} radius={8} style={{ marginBottom: 12 }} />
+            <Skeleton variant="rect" width="75%" height={18} radius={8} style={{ marginBottom: 12 }} />
+            <Skeleton variant="rect" width="70%" height={18} radius={8} style={{ marginBottom: 12 }} />
+            <Skeleton variant="rect" width="60%" height={18} radius={8} />
+          </div>
+        </div>
       </div>
     );
   }
