@@ -218,11 +218,9 @@ function ProductsContent() {
             >
               Catégorie
             </div>
-            {categories.map((cat: string) => (
+            {categories.map((cat: string, index: number) => (
               <button
-
-
-                key={cat}
+                key={`${cat}-${index}`}
                 onClick={() => {
                   triggerFiltersSkeleton();
                   setSelectedCategory(cat);
@@ -433,7 +431,11 @@ function ProductsContent() {
               }}
             >
               {filtered.map((product, i) => (
-                <ProductCard key={product.id} product={product} delay={(i % 4) * 100} />
+                <ProductCard
+                  key={product.id ?? `${product.name}-${i}`}
+                  product={product}
+                  delay={(i % 4) * 100}
+                />
               ))}
             </div>
           )}
