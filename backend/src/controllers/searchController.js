@@ -1,6 +1,33 @@
 const Product = require('../models/Product');
 const { getEmbedding } = require('../config/embedding');
 
+const normalizeCategory = (category) => {
+  if (!category) return "";
+  if (typeof category === "string") return category;
+  if (typeof category === "object") {
+    if (typeof category.name === "string") return category.name;
+    return category.toString();
+  }
+  return "";
+};
+
+const mapProductForFrontend = (product) => ({
+  id: product.id || product._id?.toString?.(),
+  name: product.name || "",
+  price: typeof product.price === 'number' ? product.price : 0,
+  originalPrice: typeof product.originalPrice === 'number' ? product.originalPrice : undefined,
+  description: product.description || "",
+  longDescription: product.longDescription || "",
+  category: normalizeCategory(product.category),
+  rating: typeof product.rating === 'number' ? product.rating : 0,
+  reviews: typeof product.reviews === 'number' ? product.reviews : 0,
+  inStock: typeof product.inStock === 'number' ? product.inStock : 0,
+  badge: product.badge || undefined,
+  image: product.image || "",
+  images: Array.isArray(product.images) ? product.images : [],
+  features: Array.isArray(product.features) ? product.features : [],
+  specs: product.specs || {},
+});
 
 const semanticSearch = async (req, res) => {
 
@@ -29,11 +56,13 @@ const semanticSearch = async (req, res) => {
         { longDescription: { $regex: regex } },
         { tags: { $elemMatch: { $regex: regex } } }
       ]
-    }).limit(10);
+    })
+      .lean()
+      .limit(10);
 
     // 2) Si au moins un résultat classique: on ne lance pas la vectorielle
     if (classicalResults.length > 0) {
-      return res.json(classicalResults);
+      return res.json(classicalResults.map(mapProductForFrontend));
     }
 
     // 2bis) Garde-fou avant la recherche vectorielle : rejette les chaînes qui
@@ -177,7 +206,7 @@ const semanticSearch = async (req, res) => {
       return res.json([]);
     }
 
-    return res.json(filtered);
+    return res.json(filtered.map(mapProductForFrontend));
 
   } catch (error) {
 
