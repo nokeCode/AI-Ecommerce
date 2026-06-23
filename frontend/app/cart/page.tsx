@@ -98,37 +98,6 @@ export default function CartPage() {
         </div>
         <h1
           style={{
-
-  const shipping = totalPrice >= 150 ? 0 : 9.9;
-  const grandTotal = totalPrice + shipping;
-
-  if (items.length === 0) {
-    return (
-      <div
-        style={{
-          maxWidth: "600px",
-          margin: "80px auto",
-          padding: "0 24px",
-          textAlign: "center",
-        }}
-      >
-        <div
-          style={{
-            width: "96px",
-            height: "96px",
-            background: "var(--bg-card)",
-            border: "1px solid var(--border-medium)",
-            borderRadius: "50%",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            margin: "0 auto 24px",
-          }}
-        >
-          <ShoppingCart size={36} style={{ color: "var(--text-muted)" }} />
-        </div>
-        <h1
-          style={{
             fontFamily: "'Georgia', serif",
             fontSize: "1.8rem",
             color: "var(--text-primary)",
