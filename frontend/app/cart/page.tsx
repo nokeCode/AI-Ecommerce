@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { useState } from "react";
 import {
   ShoppingCart,
   Trash2,
@@ -17,6 +18,86 @@ import { useCart } from "@/context/CartContext";
 export default function CartPage() {
   const { items, removeFromCart, updateQuantity, totalPrice, totalItems, clearCart } =
     useCart();
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const shipping = totalPrice >= 150 ? 0 : 9.9;
+  const grandTotal = totalPrice + shipping;
+
+  const handleCheckout = async () => {
+    if (items.length === 0) return;
+
+    setIsLoading(true);
+    setError(null);
+
+    try {
+      const cartItems = items.map(item => ({
+        name: item.product.name,
+        price: item.product.price,
+        quantity: item.quantity,
+        productId: item.product.id
+      }));
+
+      const response = await fetch(
+        "http://localhost:5000/api/payment/create-checkout",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            items: cartItems,
+            userId: null // À remplacer par l'ID utilisateur après auth JWT
+          })
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("Erreur lors de la création de la session");
+      }
+
+      const data = await response.json();
+
+      if (data.url) {
+        window.location.href = data.url;
+      } else {
+        setError("URL de paiement non reçue");
+      }
+    } catch (err: any) {
+      console.error("Erreur checkout:", err);
+      setError(err.message || "Une erreur s'est produite");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  if (items.length === 0) {
+    return (
+      <div
+        style={{
+          maxWidth: "600px",
+          margin: "80px auto",
+          padding: "0 24px",
+          textAlign: "center",
+        }}
+      >
+        <div
+          style={{
+            width: "96px",
+            height: "96px",
+            background: "var(--bg-card)",
+            border: "1px solid var(--border-medium)",
+            borderRadius: "50%",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            margin: "0 auto 24px",
+          }}
+        >
+          <ShoppingCart size={36} style={{ color: "var(--text-muted)" }} />
+        </div>
+        <h1
+          style={{
 
   const shipping = totalPrice >= 150 ? 0 : 9.9;
   const grandTotal = totalPrice + shipping;
@@ -485,19 +566,38 @@ export default function CartPage() {
                   padding: "15px",
                   borderRadius: "12px",
                   border: "none",
-                  cursor: "pointer",
+                  cursor: isLoading ? "not-allowed" : "pointer",
                   fontSize: "0.95rem",
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
                   gap: "10px",
                   marginBottom: "12px",
+                  opacity: isLoading ? 0.6 : 1,
                 }}
-                onClick={() => alert("🚧 Checkout en cours de développement — Paiement sécurisé disponible bientôt")}
+                onClick={handleCheckout}
+                disabled={isLoading}
               >
                 <CreditCard size={18} />
-                Procéder au paiement
+                {isLoading ? "Redirection..." : "Procéder au paiement"}
               </button>
+
+              {error && (
+                <div
+                  style={{
+                    background: "rgba(239, 68, 68, 0.1)",
+                    border: "1px solid rgba(239, 68, 68, 0.3)",
+                    borderRadius: "8px",
+                    padding: "12px",
+                    fontSize: "0.85rem",
+                    color: "var(--error)",
+                    marginBottom: "12px",
+                    textAlign: "center"
+                  }}
+                >
+                  {error}
+                </div>
+              )}
 
               <Link href="/products" style={{ textDecoration: "none", display: "block" }}>
                 <button

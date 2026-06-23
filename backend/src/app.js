@@ -6,6 +6,7 @@ const orderRoutes = require("./routes/orderRoutes");
 const searchRoutes = require('./routes/searchRoutes');
 const categoriesRoutes = require('./routes/categoriesRoutes');
 const chatRoutes = require('./routes/chatRoutes');
+const paymentRoutes = require('./routes/paymentRoutes');
 const app = express();
 
 
@@ -20,4 +21,6 @@ app.use(
   '/api/search',
   searchRoutes
 );
+app.use("/api/payment", paymentRoutes);
+
 module.exports = app;

@@ -25,7 +25,7 @@ const orderSchema = new mongoose.Schema({
   userId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
-    required: true
+    required: false
   },
   items: [orderItemSchema],
   totalPrice: {
@@ -39,13 +39,21 @@ const orderSchema = new mongoose.Schema({
   },
   paymentStatus: {
     type: String,
-    enum: ['PENDING', 'PAID', 'FAILED'],
+    enum: ['PENDING', 'PAID', 'FAILED', 'REFUNDED'],
     default: 'PENDING'
   },
   paymentMethod: {
     type: String,
     enum: ['CARD', 'BANK', 'PAYPAL', 'OTHER'],
     default: 'CARD'
+  },
+  stripeSessionId: {
+    type: String,
+    required: false
+  },
+  stripePaymentIntentId: {
+    type: String,
+    required: false
   },
   shippingAddress: {
     fullName: String,
