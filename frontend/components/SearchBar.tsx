@@ -269,7 +269,7 @@ export default function SearchBar({ onSearch, isPage = false }: SearchBarProps) 
               </div>
               {aiSuggestions.map((s, i) => (
                 <button
-                  key={i}
+                  key={`${s}-${i}`}
                   onClick={() => {
                     setQuery(s);
                     inputRef.current?.focus();
@@ -317,9 +317,9 @@ export default function SearchBar({ onSearch, isPage = false }: SearchBarProps) 
               >
                 Résultats
               </div>
-              {results.slice(0, 4).map((product) => (
+              {results.slice(0, 4).map((product, index) => (
                 <Link
-                  key={product.id}
+                  key={`${product.id ?? index}-${index}`}
                   href={`/product/${product.id}`}
                   onClick={() => setIsFocused(false)}
                   style={{ textDecoration: "none" }}
