@@ -7,6 +7,7 @@ const searchRoutes = require('./routes/searchRoutes');
 const categoriesRoutes = require('./routes/categoriesRoutes');
 const chatRoutes = require('./routes/chatRoutes');
 const paymentRoutes = require('./routes/paymentRoutes');
+const authRoutes = require("./routes/authRoutes");
 const app = express();
 
 
@@ -22,5 +23,6 @@ app.use(
   searchRoutes
 );
 app.use("/api/payment", paymentRoutes);
+app.use("/api/auth", authRoutes);
 
 module.exports = app;
