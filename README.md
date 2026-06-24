@@ -2,6 +2,11 @@
 
 <div align="center">
 
+  ![Vercel AI SDK](https://img.shields.io/badge/Vercel%20AI%20SDK-4.0-000000?style=for-the-badge&logo=vercel)
+  ![Google AI Studio](https://img.shields.io/badge/Google%20AI%20Studio-Gemini-4285F4?style=for-the-badge&logo=google)
+  ![MongoDB Vector Search](https://img.shields.io/badge/MongoDB%20Vector%20Search-Atlas-47A248?style=for-the-badge&logo=mongodb)
+  ![Next.js](https://img.shields.io/badge/Next.js-15.0-000000?style=for-the-badge&logo=next.js)
+  ![Stripe](https://img.shields.io/badge/Stripe-Payments-635BFF?style=for-the-badge&logo=stripe)
   ![Tailwind CSS](https://img.shields.io/badge/Tailwind%20CSS-4.0-06B6D4?style=for-the-badge&logo=tailwind-css)
   ![Node.js](https://img.shields.io/badge/Node.js-20.0-339933?style=for-the-badge&logo=node.js)
   ![Express](https://img.shields.io/badge/Express-5.0-000000?style=for-the-badge&logo=express)
