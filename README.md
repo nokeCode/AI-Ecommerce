@@ -1,10 +1,12 @@
 # 🛒 AI-Ecommerce (Fullstack Next.js + Node/Express)
 
 <div align="center">
-  <img src="https://img.shields.io/badge/Node.js-Express-6C63FF?style=for-the-badge&logo=node.js" />
-  <img src="https://img.shields.io/badge/Next.js-16+-000000?style=for-the-badge&logo=next.js" />
-  <img src="https://img.shields.io/badge/MongoDB-4EA94B?style=for-the-badge&logo=mongodb" />
-  <img src="https://img.shields.io/badge/REST-API-111827?style=for-the-badge" />
+
+  ![Tailwind CSS](https://img.shields.io/badge/Tailwind%20CSS-4.0-06B6D4?style=for-the-badge&logo=tailwind-css)
+  ![Node.js](https://img.shields.io/badge/Node.js-20.0-339933?style=for-the-badge&logo=node.js)
+  ![Express](https://img.shields.io/badge/Express-5.0-000000?style=for-the-badge&logo=express)
+  ![MongoDB Atlas](https://img.shields.io/badge/MongoDB%20Atlas-Cloud-47A248?style=for-the-badge&logo=mongodb)
+  ![JWT](https://img.shields.io/badge/JWT-Secure-303030?style=for-the-badge&logo=json-web-tokens)
 
   <p><b>Plateforme e-commerce</b> avec une recherche sémantique, catalogue produits, panier & commandes (backend Node/Express + DB MongoDB, frontend Next.js).</p>
 
@@ -20,11 +22,28 @@
 
 ## 📸 Aperçu
 
-- 🧠 Recherche sémantique (requêtes en langage naturel)
-- 🏷️ Catalogue produit + détails
-- 🛒 Panier / Commandes
-- 💬 Chatbot (route dédiée côté backend)
-- 🔎 Recherche + produits liés sur la partie frontend
+<table>
+  <tr>
+    <td align="center">
+      <img src="./screenshot/acceuil2.png" alt="Landing Page" width="100%">
+      <br><sub><b>Accueil</b></sub>
+    </td>
+    <td align="center">
+      <img src="./screenshot/produit_detail.png" alt="Catalogue Blog" width="100%">
+      <br><sub><b>Flux d'articles</b></sub>
+    </td>
+  </tr>
+  <tr>
+    <td align="center">
+      <img src="./screenshot/vector_search.png" alt="Détail article" width="100%">
+      <br><sub><b>Recherche vectoriel</b></sub>
+    </td>
+    <td align="center">
+      <img src="./screenshot/chatBot.png" alt="Dashboard" width="100%">
+      <br><sub><b>Chat bot IA</b></sub>
+    </td>
+  </tr>
+</table>
 
 ---
 
