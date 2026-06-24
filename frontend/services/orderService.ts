@@ -18,7 +18,7 @@ export interface Order {
 export async function createOrder(orderData: Omit<Order, "_id">): Promise<Order> {
   return apiFetch<Order>("/api/orders", {
     method: "POST",
-    body: JSON.stringify(orderData),
+    body: orderData,
   });
 }
 

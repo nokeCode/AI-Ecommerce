@@ -24,7 +24,7 @@ const normalizeProduct = (product: any): Product => ({
 export async function semanticSearch(query: string): Promise<SemanticSearchResponse> {
   const result = await apiFetch<SemanticSearchResponse>("/api/search", {
     method: "POST",
-    body: JSON.stringify({ query }),
+    body: { query },
   });
 
   return Array.isArray(result)

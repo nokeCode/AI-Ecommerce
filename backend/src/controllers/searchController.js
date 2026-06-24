@@ -33,7 +33,7 @@ const semanticSearch = async (req, res) => {
 
   try {
 
-    const { query } = req.body;
+    const { query } = req.body || {};
 
     if (!query || typeof query !== 'string' || query.trim().length < 2) {
       return res.status(400).json({
