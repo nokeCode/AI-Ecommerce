@@ -17,20 +17,107 @@ export default function LoginPage() {
     try {
       await login(email, password);
     } catch (err: any) {
-      setError(err?.message || "Erreur connexion");
+      setError(err?.message || "Erreur de connexion");
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div style={{ maxWidth: 480, margin: "80px auto", padding: "24px" }}>
-      <h1>Connexion</h1>
-      <form onSubmit={handleSubmit} style={{ display: "grid", gap: 12 }}>
-        <input value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Email" />
-        <input value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Mot de passe" type="password" />
-        <button type="submit" disabled={loading}>{loading ? "Connexion..." : "Se connecter"}</button>
-        {error && <div style={{ color: "red" }}>{error}</div>}
+    <div style={{ maxWidth: 420, margin: "80px auto", padding: "24px" }}>
+      <div style={{ textAlign: "center", marginBottom: "32px" }}>
+        <h1 style={{ fontSize: "28px", fontWeight: 700, color: "#111827", margin: "0 0 8px 0" }}>
+          Connexion
+        </h1>
+        <p style={{ fontSize: "15px", color: "#6b7280", margin: 0 }}>
+          Accédez à votre compte
+        </p>
+      </div>
+
+      <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
+        <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
+          <label htmlFor="email" style={{ fontSize: "14px", fontWeight: 500, color: "#374151" }}>
+            Adresse email
+          </label>
+          <input
+            id="email"
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            placeholder="vous@exemple.com"
+            required
+            style={{
+              padding: "12px 14px",
+              fontSize: "15px",
+              border: "1px solid #d1d5db",
+              borderRadius: "8px",
+              outline: "none",
+              backgroundColor: "#ffffff",
+              color: "#111827",
+            }}
+            onFocus={(e) => { e.currentTarget.style.borderColor = "#2563eb"; e.currentTarget.style.boxShadow = "0 0 0 3px rgba(37, 99, 235, 0.1)"; }}
+            onBlur={(e) => { e.currentTarget.style.borderColor = "#d1d5db"; e.currentTarget.style.boxShadow = "none"; }}
+          />
+        </div>
+
+        <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
+          <label htmlFor="password" style={{ fontSize: "14px", fontWeight: 500, color: "#374151" }}>
+            Mot de passe
+          </label>
+          <input
+            id="password"
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            placeholder="••••••••"
+            required
+            style={{
+              padding: "12px 14px",
+              fontSize: "15px",
+              border: "1px solid #d1d5db",
+              borderRadius: "8px",
+              outline: "none",
+              backgroundColor: "#ffffff",
+              color: "#111827",
+            }}
+            onFocus={(e) => { e.currentTarget.style.borderColor = "#2563eb"; e.currentTarget.style.boxShadow = "0 0 0 3px rgba(37, 99, 235, 0.1)"; }}
+            onBlur={(e) => { e.currentTarget.style.borderColor = "#d1d5db"; e.currentTarget.style.boxShadow = "none"; }}
+          />
+        </div>
+
+        {error && (
+          <div style={{
+            padding: "12px 16px",
+            backgroundColor: "#fef2f2",
+            border: "1px solid #fecaca",
+            borderRadius: "8px",
+            color: "#dc2626",
+            fontSize: "14px",
+          }}>
+            {error}
+          </div>
+        )}
+
+        <button
+          type="submit"
+          disabled={loading}
+          style={{
+            marginTop: "4px",
+            padding: "12px 20px",
+            fontSize: "15px",
+            fontWeight: 600,
+            color: "#ffffff",
+            backgroundColor: loading ? "#9ca3af" : "#111827",
+            border: "none",
+            borderRadius: "8px",
+            cursor: loading ? "not-allowed" : "pointer",
+            transition: "background-color 0.2s",
+          }}
+          onMouseEnter={(e) => { if (!loading) e.currentTarget.style.backgroundColor = "#374151"; }}
+          onMouseLeave={(e) => { if (!loading) e.currentTarget.style.backgroundColor = "#111827"; }}
+        >
+          {loading ? "Connexion en cours..." : "Se connecter"}
+        </button>
       </form>
     </div>
   );
